@@ -23,9 +23,21 @@ function create() {
         // I think this adds collision detection
         platforms.enableBody = true
 
-        let groud = platforms.create(0, game.world.height - 64, 'ground')
+        //Making the ground
+        let ground = platforms.create(0, game.world.height - 64, 'ground')
+        ground.scale.setTo(2,2)
+        ground.body.immovable = true
 
-    console.log("Create function ran")
+        //Making the ledges
+        let ledge = platforms.create(400, 450, 'ground') 
+        ledge.body.immovable = true
+
+        ledge = platforms.create(-75, 350, 'ground')
+
+        //Create Player
+        player = game.add.sprite(32, game.world.height - 150, 'woof')
+
+
 }
 
 function update() {}
