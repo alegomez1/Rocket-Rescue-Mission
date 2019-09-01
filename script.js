@@ -61,7 +61,7 @@ function create() {
             diamond.body.gravity.y = 1000
             diamond.body.bounce.y = 0.3 + Math.random() * 0.2
         }
-
+        //Adds text on screen which appears when the score is increased
         scoreText = game.add.text(16, 16, '', { fontSize: '32px', fill: '#000'})
         cursors = game.input.keyboard.createCursorKeys()
 
