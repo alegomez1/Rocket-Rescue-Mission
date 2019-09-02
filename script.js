@@ -58,7 +58,7 @@ function create() {
 
     //*************************** */BAD GUY SECTION TEST ***************************
 
-    badGuy = game.add.sprite(300, game.world.height - 150, 'badGuy')
+    badGuy = game.add.sprite(400, 400, 'badGuy')
     game.physics.arcade.enable(badGuy)
     badGuy.body.bounce.y = .2
     badGuy.body.gravity.y = 800
@@ -93,18 +93,20 @@ badGuy.enableBody = true
 
 }
 
+var number = 0
+
 function update() {
     //Adding collision||Reads as 'x' will collide with 'y'
     game.physics.arcade.collide(player, platforms)
 
 
     game.physics.arcade.collide(badGuy, platforms)
-    game.physics.arcade.collide(player, badGuy)
+    // game.physics.arcade.collide(player, badGuy)
 
     game.physics.arcade.collide(diamonds, platforms)
 
     game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this)
-    game.physics.arcade.overlap(badGuy, player, defeat, null, this)
+
 
 
     //Player's movement along x-axis||Can be altered to simulate wind blowing conditions
@@ -152,6 +154,26 @@ function update() {
     //     console.log("second" + jumpCount)
     // }
 
+    //Moves bad guy back and forth
+    if(number<100){
+        badGuy.x += 3
+        number ++
+        
+    }
+    if(number>= 100){
+        badGuy.x -= 3
+        number ++
+    }
+
+    if(number === 200){
+        number = 0
+    }
+
+    console.log(number)
+
+
+
+
 }
 
 function collectDiamond(player, diamond) {
@@ -161,8 +183,22 @@ function collectDiamond(player, diamond) {
     score += 10
     scoreText.text = 'Score: ' + score
 }
-
+//Test function for defeating the player
 function defeat(badGuy, player){
     player.kill()
     alert('Game over')
+}
+
+function enemyMove(){
+    if(number = 10){
+        badGuy.x += 5
+        number -= 10
+        console.log(number)
+    }
+    if(number = 0){
+        badGuy.x += 5
+        number += 5
+        console.log('pppp')
+    }
+    
 }
