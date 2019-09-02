@@ -79,9 +79,8 @@ function update() {
 
     game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this)
 
+    //Player's movement along x-axis||Can be altered to simulate wind blowing conditions
     player.body.velocity.x = 0
-
-
 
     //Movement
     if (cursors.left.isDown) {
@@ -94,15 +93,14 @@ function update() {
         player.animations.stop()
     }
     if (cursors.up.isDown && player.body.touching.down) {
-        player.body.velocity.y = -400
-
+        player.body.velocity.y = -450
     } 
 
-    
-
-
-
-
+    //Game over alert
+    if(score == 120){
+        alert("You win!")
+        score = 0
+    }
     //Code for flying/fuel game
 
        //Movement
@@ -126,7 +124,6 @@ function update() {
     //     console.log("second" + jumpCount)
     // }
 
-
 }
 
 function collectDiamond(player, diamond) {
@@ -136,5 +133,3 @@ function collectDiamond(player, diamond) {
     score += 10
     scoreText.text = 'Score: ' + score
 }
-
-console.log("Finished")
