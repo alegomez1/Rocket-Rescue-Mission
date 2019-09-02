@@ -9,12 +9,16 @@ let platforms
 let player
 let diamonds
 let score = 0
+var number = 0
+
+let badGuy
 
 function preload() {
     game.load.image('sky', "images/sky.png");
     game.load.image('ground', 'images/platform.png');
     game.load.image('diamond', 'images/diamond.png');
     game.load.spritesheet('woof', 'images/woof.png', 32, 32)
+    game.load.spritesheet('badGuy', 'images/woof.png', 32, 32)
 }
 
 function create() {
@@ -38,7 +42,7 @@ function create() {
     ledge = platforms.create(-75, 350, 'ground')
     ledge.body.immovable = true
 
-    //Create Player
+    //Create Player|| Position along x-axis, along y-axis, and sprite
     player = game.add.sprite(32, game.world.height - 150, 'woof')
     game.physics.arcade.enable(player)
     //Controls bouncing upon hitting ground
@@ -51,6 +55,29 @@ function create() {
     //Sprite Animations
     player.animations.add('left', [0, 1], 8, true)
     player.animations.add('right', [2, 3], 8, true)
+
+   
+
+
+    //*************************** */BAD GUY SECTION TEST ***************************
+
+    badGuy = game.add.sprite(400, 400, 'badGuy')
+    game.physics.arcade.enable(badGuy)
+    badGuy.body.bounce.y = .2
+    badGuy.body.gravity.y = 800
+    badGuy.body.collideWorldBounds = true
+
+badGuy.enableBody = true
+
+badGuy.animations.add('left', [0, 1], 8, true)
+badGuy.animations.add('right', [2, 3], 8, true)
+
+
+    //******************** */END BAD GUY SECTION TEST ***************************
+
+
+
+
 
     diamonds = game.add.group()
     diamonds.enableBody = true
@@ -72,12 +99,21 @@ function create() {
 
 }
 
+
+
 function update() {
     //Adding collision||Reads as 'x' will collide with 'y'
     game.physics.arcade.collide(player, platforms)
+
+
+    game.physics.arcade.collide(badGuy, platforms)
+    // game.physics.arcade.collide(player, badGuy)
+
     game.physics.arcade.collide(diamonds, platforms)
 
     game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this)
+
+
 
     //Player's movement along x-axis||Can be altered to simulate wind blowing conditions
     player.body.velocity.x = 0
@@ -124,6 +160,9 @@ function update() {
     //     console.log("second" + jumpCount)
     // }
 
+    //Moves bad guy back and forth
+    enemyMove()
+
 }
 
 function collectDiamond(player, diamond) {
@@ -132,4 +171,26 @@ function collectDiamond(player, diamond) {
     //Adds 10 to overall score, then changes text
     score += 10
     scoreText.text = 'Score: ' + score
+}
+//Test function for defeating the player
+function defeat(badGuy, player){
+    player.kill()
+    alert('Game over')
+}
+
+function enemyMove(){
+    if(number<100){
+        badGuy.x += 3
+        number ++
+        badGuy.animations.play('right')
+    }
+    if(number>= 100){
+        badGuy.x -= 3
+        number ++
+        badGuy.animations.play('left')
+    }
+    if(number === 200){
+        number = 0
+    }
+    console.log(number)
 }
