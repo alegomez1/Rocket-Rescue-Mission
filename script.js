@@ -9,6 +9,7 @@ let platforms
 let player
 let diamonds
 let score = 0
+var number = 0
 
 let badGuy
 
@@ -55,6 +56,8 @@ function create() {
     player.animations.add('left', [0, 1], 8, true)
     player.animations.add('right', [2, 3], 8, true)
 
+   
+
 
     //*************************** */BAD GUY SECTION TEST ***************************
 
@@ -65,6 +68,9 @@ function create() {
     badGuy.body.collideWorldBounds = true
 
 badGuy.enableBody = true
+
+badGuy.animations.add('left', [0, 1], 8, true)
+badGuy.animations.add('right', [2, 3], 8, true)
 
 
     //******************** */END BAD GUY SECTION TEST ***************************
@@ -93,7 +99,7 @@ badGuy.enableBody = true
 
 }
 
-var number = 0
+
 
 function update() {
     //Adding collision||Reads as 'x' will collide with 'y'
@@ -155,24 +161,7 @@ function update() {
     // }
 
     //Moves bad guy back and forth
-    if(number<100){
-        badGuy.x += 3
-        number ++
-        
-    }
-    if(number>= 100){
-        badGuy.x -= 3
-        number ++
-    }
-
-    if(number === 200){
-        number = 0
-    }
-
-    console.log(number)
-
-
-
+    enemyMove()
 
 }
 
@@ -190,15 +179,18 @@ function defeat(badGuy, player){
 }
 
 function enemyMove(){
-    if(number = 10){
-        badGuy.x += 5
-        number -= 10
-        console.log(number)
+    if(number<100){
+        badGuy.x += 3
+        number ++
+        badGuy.animations.play('right')
     }
-    if(number = 0){
-        badGuy.x += 5
-        number += 5
-        console.log('pppp')
+    if(number>= 100){
+        badGuy.x -= 3
+        number ++
+        badGuy.animations.play('left')
     }
-    
+    if(number === 200){
+        number = 0
+    }
+    console.log(number)
 }
