@@ -12,6 +12,8 @@ let score = 0
 var number = 0
 
 let badGuy
+let badGuy2
+let gameOver = false;
 
 function preload() {
     game.load.image('sky', "images/sky.png");
@@ -56,7 +58,7 @@ function create() {
     player.animations.add('left', [0, 1], 8, true)
     player.animations.add('right', [2, 3], 8, true)
 
-   
+
 
 
     //*************************** */BAD GUY SECTION TEST ***************************
@@ -67,10 +69,10 @@ function create() {
     badGuy.body.gravity.y = 800
     badGuy.body.collideWorldBounds = true
 
-badGuy.enableBody = true
+    badGuy.enableBody = true
 
-badGuy.animations.add('left', [0, 1], 8, true)
-badGuy.animations.add('right', [2, 3], 8, true)
+    badGuy.animations.add('left', [0, 1], 8, true)
+    badGuy.animations.add('right', [2, 3], 8, true)
 
 
     //******************** */END BAD GUY SECTION TEST ***************************
@@ -112,7 +114,8 @@ function update() {
     game.physics.arcade.collide(diamonds, platforms)
 
     game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this)
-
+    
+   
 
 
     //Player's movement along x-axis||Can be altered to simulate wind blowing conditions
@@ -130,16 +133,16 @@ function update() {
     }
     if (cursors.up.isDown && player.body.touching.down) {
         player.body.velocity.y = -450
-    } 
+    }
 
     //Game over alert
-    if(score == 120){
+    if (score == 120) {
         alert("You win!")
         score = 0
     }
     //Code for flying/fuel game
 
-       //Movement
+    //Movement
     //    if (cursors.left.isDown) {
     //     player.body.velocity.x = -150
     //     player.animations.play('left')
@@ -163,6 +166,10 @@ function update() {
     //Moves bad guy back and forth
     enemyMove()
 
+    checkGameOver()
+ 
+
+
 }
 
 function collectDiamond(player, diamond) {
@@ -173,24 +180,29 @@ function collectDiamond(player, diamond) {
     scoreText.text = 'Score: ' + score
 }
 //Test function for defeating the player
-function defeat(badGuy, player){
-    player.kill()
-    alert('Game over')
+function checkGameOver() {
+    if(player.overlap(badGuy) && (gameOver != true)){
+        console.log("TOUCH")
+        alert("Game over!")
+        badGuy.kill() 
+        player.kill()
+        gameOver = true
+    }
 }
 
-function enemyMove(){
-    if(number<100){
+function enemyMove() {
+    if (number < 100) {
         badGuy.x += 3
-        number ++
+        number++
         badGuy.animations.play('right')
     }
-    if(number>= 100){
+    if (number >= 100) {
         badGuy.x -= 3
-        number ++
+        number++
         badGuy.animations.play('left')
     }
-    if(number === 200){
+    if (number === 200) {
         number = 0
     }
-    console.log(number)
+
 }
