@@ -10,6 +10,7 @@ let player
 let diamonds
 let score = 0
 var number = 0
+var number2 = 0
 
 let badGuy
 let badGuy2
@@ -21,6 +22,7 @@ function preload() {
     game.load.image('diamond', 'images/diamond.png');
     game.load.spritesheet('woof', 'images/woof.png', 32, 32)
     game.load.spritesheet('badGuy', 'images/woof.png', 32, 32)
+    game.load.spritesheet('badGuy2', 'images/woof.png', 32, 32)
 }
 
 function create() {
@@ -75,6 +77,18 @@ function create() {
     badGuy.animations.add('right', [2, 3], 8, true)
 
 
+    badGuy2 = game.add.sprite(0, 290, 'badGuy2')
+    game.physics.arcade.enable(badGuy2)
+    badGuy2.body.bounce.y = .2
+    badGuy2.body.gravity.y = 800
+    badGuy2.body.collideWorldBounds = true
+
+    badGuy2.enableBody = true
+
+    badGuy2.animations.add('left', [0, 1], 8, true)
+    badGuy2.animations.add('right', [2, 3], 8, true)
+
+
     //******************** */END BAD GUY SECTION TEST ***************************
 
 
@@ -109,6 +123,7 @@ function update() {
 
 
     game.physics.arcade.collide(badGuy, platforms)
+    game.physics.arcade.collide(badGuy2, platforms)
     // game.physics.arcade.collide(player, badGuy)
 
     game.physics.arcade.collide(diamonds, platforms)
@@ -165,6 +180,8 @@ function update() {
 
     //Moves bad guy back and forth
     enemyMove()
+    enemyMove2()
+
 
     checkGameOver()
  
@@ -185,6 +202,16 @@ function checkGameOver() {
         console.log("TOUCH")
         alert("Game over!")
         badGuy.kill() 
+        badGuy2.kill() 
+        player.kill()
+        gameOver = true
+    }
+
+    if(player.overlap(badGuy2) && (gameOver != true)){
+        console.log("TOUCH")
+        alert("Game over!")
+        badGuy2.kill() 
+        badGuy.kill() 
         player.kill()
         gameOver = true
     }
@@ -204,5 +231,20 @@ function enemyMove() {
     if (number === 200) {
         number = 0
     }
+}
 
+function enemyMove2() {
+    if (number2 < 100) {
+        badGuy2.x += 3
+        number2++
+        badGuy2.animations.play('right')
+    }
+    if (number2 >= 100) {
+        badGuy2.x -= 3
+        number2++
+        badGuy2.animations.play('left')
+    }
+    if (number2 === 200) {
+        number2 = 0
+    }
 }
