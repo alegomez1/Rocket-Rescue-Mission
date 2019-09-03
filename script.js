@@ -64,7 +64,6 @@ function create() {
 
 
     //*************************** */BAD GUY SECTION TEST ***************************
-
     badGuy = game.add.sprite(400, 400, 'badGuy')
     game.physics.arcade.enable(badGuy)
     badGuy.body.bounce.y = .2
@@ -76,7 +75,6 @@ function create() {
     badGuy.animations.add('left', [0, 1], 8, true)
     badGuy.animations.add('right', [2, 3], 8, true)
 
-
     badGuy2 = game.add.sprite(0, 290, 'badGuy2')
     game.physics.arcade.enable(badGuy2)
     badGuy2.body.bounce.y = .2
@@ -87,11 +85,7 @@ function create() {
 
     badGuy2.animations.add('left', [0, 1], 8, true)
     badGuy2.animations.add('right', [2, 3], 8, true)
-
-
     //******************** */END BAD GUY SECTION TEST ***************************
-
-
 
 
 
@@ -111,11 +105,7 @@ function create() {
     })
     cursors = game.input.keyboard.createCursorKeys()
 
-
-
 }
-
-
 
 function update() {
     //Adding collision||Reads as 'x' will collide with 'y'
@@ -130,9 +120,6 @@ function update() {
 
     game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this)
     
-   
-
-
     //Player's movement along x-axis||Can be altered to simulate wind blowing conditions
     player.body.velocity.x = 0
 
@@ -155,7 +142,19 @@ function update() {
         alert("You win!")
         score = 0
     }
-    //Code for flying/fuel game
+
+    //Moves bad guy back and forth
+    enemyMove()
+    enemyMove2()
+
+    //Add for speed boost in the enemies
+    // enemyMove()
+    // enemyMove2()
+
+
+    checkGameOver()
+
+        //Code for flying/fuel game
 
     //Movement
     //    if (cursors.left.isDown) {
@@ -177,16 +176,6 @@ function update() {
     //     jumpCount += 1
     //     console.log("second" + jumpCount)
     // }
-
-    //Moves bad guy back and forth
-    enemyMove()
-    enemyMove2()
-
-
-    checkGameOver()
- 
-
-
 }
 
 function collectDiamond(player, diamond) {
@@ -216,23 +205,23 @@ function checkGameOver() {
         gameOver = true
     }
 }
-
+//Controls movement for enemy on bottom right ledge
 function enemyMove() {
-    if (number < 100) {
+    if (number < 120) {
         badGuy.x += 3
         number++
         badGuy.animations.play('right')
     }
-    if (number >= 100) {
+    if (number >= 120) {
         badGuy.x -= 3
         number++
         badGuy.animations.play('left')
     }
-    if (number === 200) {
+    if (number === 240) {
         number = 0
     }
 }
-
+//Controls movement for enemy on top left ledge
 function enemyMove2() {
     if (number2 < 100) {
         badGuy2.x += 3
