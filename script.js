@@ -10,6 +10,7 @@ let player
 let diamonds
 let score = 0
 var number = 0
+var number2 = 0
 
 let badGuy
 let badGuy2
@@ -21,6 +22,7 @@ function preload() {
     game.load.image('diamond', 'images/diamond.png');
     game.load.spritesheet('woof', 'images/woof.png', 32, 32)
     game.load.spritesheet('badGuy', 'images/woof.png', 32, 32)
+    game.load.spritesheet('badGuy2', 'images/woof.png', 32, 32)
 }
 
 function create() {
@@ -62,7 +64,6 @@ function create() {
 
 
     //*************************** */BAD GUY SECTION TEST ***************************
-
     badGuy = game.add.sprite(400, 400, 'badGuy')
     game.physics.arcade.enable(badGuy)
     badGuy.body.bounce.y = .2
@@ -74,10 +75,17 @@ function create() {
     badGuy.animations.add('left', [0, 1], 8, true)
     badGuy.animations.add('right', [2, 3], 8, true)
 
+    badGuy2 = game.add.sprite(0, 290, 'badGuy2')
+    game.physics.arcade.enable(badGuy2)
+    badGuy2.body.bounce.y = .2
+    badGuy2.body.gravity.y = 800
+    badGuy2.body.collideWorldBounds = true
 
+    badGuy2.enableBody = true
+
+    badGuy2.animations.add('left', [0, 1], 8, true)
+    badGuy2.animations.add('right', [2, 3], 8, true)
     //******************** */END BAD GUY SECTION TEST ***************************
-
-
 
 
 
@@ -97,11 +105,7 @@ function create() {
     })
     cursors = game.input.keyboard.createCursorKeys()
 
-
-
 }
-
-
 
 function update() {
     //Adding collision||Reads as 'x' will collide with 'y'
@@ -109,15 +113,13 @@ function update() {
 
 
     game.physics.arcade.collide(badGuy, platforms)
+    game.physics.arcade.collide(badGuy2, platforms)
     // game.physics.arcade.collide(player, badGuy)
 
     game.physics.arcade.collide(diamonds, platforms)
 
     game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this)
     
-   
-
-
     //Player's movement along x-axis||Can be altered to simulate wind blowing conditions
     player.body.velocity.x = 0
 
@@ -140,7 +142,19 @@ function update() {
         alert("You win!")
         score = 0
     }
-    //Code for flying/fuel game
+
+    //Moves bad guy back and forth
+    enemyMove()
+    enemyMove2()
+
+    //Add for speed boost in the enemies
+    // enemyMove()
+    // enemyMove2()
+
+
+    checkGameOver()
+
+        //Code for flying/fuel game
 
     //Movement
     //    if (cursors.left.isDown) {
@@ -162,14 +176,6 @@ function update() {
     //     jumpCount += 1
     //     console.log("second" + jumpCount)
     // }
-
-    //Moves bad guy back and forth
-    enemyMove()
-
-    checkGameOver()
- 
-
-
 }
 
 function collectDiamond(player, diamond) {
@@ -185,24 +191,49 @@ function checkGameOver() {
         console.log("TOUCH")
         alert("Game over!")
         badGuy.kill() 
+        badGuy2.kill() 
+        player.kill()
+        gameOver = true
+    }
+
+    if(player.overlap(badGuy2) && (gameOver != true)){
+        console.log("TOUCH")
+        alert("Game over!")
+        badGuy2.kill() 
+        badGuy.kill() 
         player.kill()
         gameOver = true
     }
 }
-
+//Controls movement for enemy on bottom right ledge
 function enemyMove() {
-    if (number < 100) {
+    if (number < 120) {
         badGuy.x += 3
         number++
         badGuy.animations.play('right')
     }
-    if (number >= 100) {
+    if (number >= 120) {
         badGuy.x -= 3
         number++
         badGuy.animations.play('left')
     }
-    if (number === 200) {
+    if (number === 240) {
         number = 0
     }
-
+}
+//Controls movement for enemy on top left ledge
+function enemyMove2() {
+    if (number2 < 100) {
+        badGuy2.x += 3
+        number2++
+        badGuy2.animations.play('right')
+    }
+    if (number2 >= 100) {
+        badGuy2.x -= 3
+        number2++
+        badGuy2.animations.play('left')
+    }
+    if (number2 === 200) {
+        number2 = 0
+    }
 }
