@@ -193,6 +193,7 @@ function checkGameOver() {
         badGuy.kill() 
         badGuy2.kill() 
         player.kill()
+        scoreText.text = 'Refresh and try again!'
         gameOver = true
     }
 
