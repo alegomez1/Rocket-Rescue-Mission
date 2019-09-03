@@ -21,8 +21,8 @@ function preload() {
     game.load.image('ground', 'images/platform.png');
     game.load.image('diamond', 'images/diamond.png');
     game.load.spritesheet('woof', 'images/woof.png', 32, 32)
-    game.load.spritesheet('badGuy', 'images/woof.png', 32, 32)
-    game.load.spritesheet('badGuy2', 'images/woof.png', 32, 32)
+    game.load.spritesheet('badGuy', 'images/evilWoof.png', 32, 32)
+    game.load.spritesheet('badGuy2', 'images/evilWoof.png', 32, 32)
 }
 
 function create() {
@@ -193,6 +193,7 @@ function checkGameOver() {
         badGuy.kill() 
         badGuy2.kill() 
         player.kill()
+        scoreText.text = 'Refresh and try again!'
         gameOver = true
     }
 
