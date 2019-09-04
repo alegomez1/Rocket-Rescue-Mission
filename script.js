@@ -1,5 +1,3 @@
-console.log("Started")
-
 const game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
     preload: preload,
     create: create,
@@ -93,8 +91,9 @@ function create() {
     diamonds.enableBody = true
 
     //Creating Diamonds
-    for (var i = 0; i < 12; i++) {
-        let diamond = diamonds.create(i * 70, 0, 'diamond')
+    for (var i = 0; i < 50; i++) {
+        let diamond = diamonds.create(i*30, 0, 'diamond')
+    
         diamond.body.gravity.y = 1000
         diamond.body.bounce.y = 0.3 + Math.random() * 0.2
     }
@@ -138,7 +137,7 @@ function update() {
     }
 
     //Game over alert
-    if (score == 120) {
+    if (score == 200) {
         alert("You win!")
         score = 0
     }
@@ -189,11 +188,12 @@ function collectDiamond(player, diamond) {
 function checkGameOver() {
     if(player.overlap(badGuy) && (gameOver != true)){
         console.log("TOUCH")
+        scoreText.text = 'Refresh and try again!'
         alert("Game over!")
         badGuy.kill() 
         badGuy2.kill() 
         player.kill()
-        scoreText.text = 'Refresh and try again!'
+        
         gameOver = true
     }
 
