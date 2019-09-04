@@ -6,12 +6,14 @@ const game = new Phaser.Game(1300, 500, Phaser.AUTO, '', {
 
 let player
 let platforms
+let asteroids
 let fuel = 200
 let onPlatform = false
 
 function preload() {
   game.load.image('rocket', "images/RocketSprite.png")
   game.load.image('platform', "images/landingPad.png")
+  game.load.image('asteroid', 'images/asteroid.png')
 
 }
 
@@ -28,9 +30,13 @@ function create() {
 
   platforms = game.add.group()
   platforms.enableBody = true
-  let pad1 = platforms.create(100,300, 'platform')
-  pad1.body.immovable = true
+  platforms.create(100,300, 'platform').body.immovable = true
+  platforms.create(300,400, 'platform').body.immovable = true
+  platforms.create(500,100, 'platform').body.immovable = true
 
+  asteroids = game.add.group()
+  asteroids.enableBody = true
+  
 
 
 
@@ -49,7 +55,6 @@ function update() {
   game.physics.arcade.collide(player, platforms)
   //Player's movement along x-axis||Can be altered to simulate wind blowing conditions
   player.body.velocity.x = 0
-
 
   //Movement
   if (cursors.left.isDown && fuel>0) {
@@ -75,8 +80,18 @@ function update() {
   //Adding fuel
   if(player.body.touching.down && onPlatform == false){
     console.log("touch")
-    fuel += 75
+    fuel += 100
     onPlatform = true
+  }else if(player.body.touching.nothing){
+    console.log("floating")
+  }
+}
+
+function createAsteroid(){
+
+  for(var i = 0; i<10; i++){
+    rock1 = asteroids.create(800, 100, 'asteroid')
+    rock1.body.gravity.x = -50
   }
 
 }
