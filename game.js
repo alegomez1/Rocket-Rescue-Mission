@@ -5,6 +5,7 @@ const game = new Phaser.Game(1300, 500, Phaser.AUTO, '', {
 })
 
 let player
+let fuel = 200
 
 function preload() {
   game.load.image('rocket', "images/RocketSprite.png")
@@ -13,7 +14,7 @@ function preload() {
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
-  player = game.add.sprite(0, 0, 'rocket')
+  player = game.add.sprite(0, 500, 'rocket')
 
   game.physics.arcade.enable(player)
   //Controls bouncing upon hitting ground
@@ -24,6 +25,12 @@ function create() {
   player.body.collideWorldBounds = true
 
   cursors = game.input.keyboard.createCursorKeys()
+
+  fuelText = game.add.text(16, 16, '', {
+    fontSize: '32px',
+    fill: '#FFFFFF'
+})
+
 }
 
 function update() {
@@ -33,17 +40,24 @@ function update() {
 
 
   //Movement
-  if (cursors.left.isDown) {
+  if (cursors.left.isDown && fuel>0) {
     player.body.velocity.x = -150
-    player.animations.play('left')
-  } else if (cursors.right.isDown) {
+    fuel -= 1
+    // player.angle +=1
+
+  } else if (cursors.right.isDown && fuel>0) {
     player.body.velocity.x = 150
-    player.animations.play('right')
-  } if (cursors.up.isDown) {
-    player.body.velocity.y = -450
+    fuel -= 1
+    // player.angle +=1
+
+  } if (cursors.up.isDown && fuel>0) {
+    player.body.velocity.y = -250
+    fuel -= 1
   } else {
     player.animations.stop()
   }
+
+  fuelText.text = 'Fuel: ' + fuel
 
 
 }
