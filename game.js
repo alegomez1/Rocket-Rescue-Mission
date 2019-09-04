@@ -9,6 +9,8 @@ let platforms
 let asteroids
 let fuel = 200
 let onPlatform = false
+let gameOver = false
+let rock
 
 function preload() {
   game.load.image('rocket', "images/RocketSprite.png")
@@ -37,6 +39,7 @@ function create() {
   asteroids = game.add.group()
   asteroids.enableBody = true
   
+  game.physics.arcade.collide(player, asteroids)
 
 
 
@@ -47,6 +50,11 @@ function create() {
     fontSize: '32px',
     fill: '#FFFFFF'
 })
+
+
+createAsteroid()
+
+checkGameOver()
 
 }
 
@@ -82,16 +90,31 @@ function update() {
     console.log("touch")
     fuel += 100
     onPlatform = true
-  }else if(player.body.touching.nothing){
-    console.log("floating")
+  }else if(player.body.touching.down && onPlatform == true){
+    onPlatform = false
   }
+
+
+
 }
+
+
 
 function createAsteroid(){
 
-  for(var i = 0; i<10; i++){
-    rock1 = asteroids.create(800, 100, 'asteroid')
-    rock1.body.gravity.x = -50
-  }
+    setInterval(function(){
+      rock = asteroids.create(1400, Math.floor(Math.random() * 500), 'asteroid') 
+      rock.body.gravity.x = -100
+    }, 500)
 
+    game.physics.arcade.collide(player, asteroids)
+}
+
+function checkGameOver(){
+  if(player.overlap(asteroids) && (gameOver != true)){
+
+    console.log("HIT SPACE ROCK")
+    
+    gameOver = true
+}
 }
