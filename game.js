@@ -13,6 +13,7 @@ let onPlatform = false
 let gameOver = false
 let rock
 let astronaut
+let fuelCan
 var emmiter
 
 let astroPosition = 0
@@ -26,6 +27,7 @@ function preload() {
   game.load.image('smoke', 'images/smoke.png')
   game.load.image('orangeSmoke', 'images/orangeSmoke.png')
   game.load.image('astronaut', 'images/astronaut.png')
+  game.load.image('fuelCan', 'images/fuel.png')
 
 }
 
@@ -38,7 +40,7 @@ function create() {
   //Rate of decent
   player.body.gravity.y = 800
   //Stops player from falling||Allows it to stay within world bounds
-  player.body.collideWorldBounds = true
+  player.body.collideWorldBounds = false
   //Creates three platforms
   platforms = game.add.group()
   platforms.enableBody = true
@@ -47,10 +49,17 @@ function create() {
 
   asteroids = game.add.group()
   asteroids.enableBody = true
-  asteroids
+
+  cans = game.add.group()
+  cans.enableBody = true
+
   
   game.physics.arcade.enable(asteroids)
+  game.physics.arcade.enable(cans)
   game.physics.arcade.collide(player, asteroids)
+
+
+
 
   emitter = game.add.emitter(player+200, player+200, 400);
 
@@ -71,8 +80,12 @@ function create() {
 //Adding floating astronaut
 astronaut = game.add.sprite(1200, 0, 'astronaut')
 astronaut.scale.setTo(0.5,0.5)
-createAsteroid()
 
+//Adding Fuel Cans
+fuelCan = game.add.sprite(10000, 250, 'fuelCan')
+
+createAsteroid()
+createFuelCan()
 }
 
 function update() {
@@ -113,7 +126,7 @@ function update() {
     emitter.emitY = -500
   }
   //Changes text on the screen
-  fuelText.text = 'Fuel: ' + fuel
+  fuelText.text = 'Fuel: ' + fuel + ' units'
 
   //Adding fuel
   if(player.body.touching.down && onPlatform == false){
@@ -129,13 +142,19 @@ function update() {
   game.physics.arcade.collide(player, astronaut)
 
 
+
 //Astronaut's up and down movement
   float()
 
-
 checkGameOver()
+collectFuel()
 
 }
+
+
+
+
+
 function render() {
 }
 
@@ -159,8 +178,6 @@ function checkGameOver(){
 }
 
 }
-
-
 function float(){
 //Moving Astronaut up and down
 if(astroPosition < 490){
@@ -179,5 +196,20 @@ if(astroPosition >= 900){
   astroPosition = 10
   console.log(astroPosition, '3')
 }
+}
+function createFuelCan(){
+  setInterval(function(){
+    fuelCan = cans.create(1490, Math.floor(Math.random() * 500), 'fuelCan')
+   fuelCan.body.gravity.x = -400
+ }, 3000)
+}
+function collectFuel(){
+  
+
+  if(player.overlap(fuelCan)){
+    fuel += 50
+  }
+
+
 
 }
