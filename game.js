@@ -2,7 +2,6 @@ const game = new Phaser.Game(1300, 500, Phaser.AUTO, '', {
   preload: preload,
   create: create,
   update: update,
-  render: render
 })
 
 let player
@@ -17,8 +16,6 @@ let fuelCan
 var emmiter
 
 let astroPosition = 0
-
-
 
 function preload() {
   game.load.image('rocket', "images/RocketSprite.png")
@@ -46,20 +43,15 @@ function create() {
   platforms.enableBody = true
   platforms.create(0,400, 'platform').body.immovable = true
 
-
   asteroids = game.add.group()
   asteroids.enableBody = true
 
   cans = game.add.group()
   cans.enableBody = true
 
-  
   game.physics.arcade.enable(asteroids)
   game.physics.arcade.enable(cans)
   game.physics.arcade.collide(player, asteroids)
-
-
-
 
   emitter = game.add.emitter(player+200, player+200, 400);
 
@@ -103,7 +95,6 @@ function update() {
   emitter.minParticleSpeed.set(px, py);
   emitter.maxParticleSpeed.set(px, py);
 
-
   //Movement
   if (cursors.left.isDown && fuel>0) {
     player.body.velocity.x = -150
@@ -141,21 +132,12 @@ function update() {
   game.physics.arcade.collide(player, asteroids)
   game.physics.arcade.collide(player, astronaut)
 
-
-
 //Astronaut's up and down movement
   float()
 
 checkGameOver()
 collectFuel()
 
-}
-
-
-
-
-
-function render() {
 }
 
 function createAsteroid(){
