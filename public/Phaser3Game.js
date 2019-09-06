@@ -47,34 +47,73 @@ function preload(){
 
 function create() {
 
+    var self = this;
     this.socket = io();
-    //Player(Rocket)
-    player = this.physics.add.sprite(35, 250, 'rocket')
-    player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
-    //Astronaut
-    astronaut = this.physics.add.sprite(1200, 0, 'astronaut')
-    astronaut.setScale(.5)
-    astronaut.body.allowGravity = false
-    //Platform
-    rocketPad = this.physics.add.sprite(35, 290, 'platform')
-    rocketPad.body.allowGravity = false;
-    rocketPad.body.immovable = true;
-    //Asteroids
-    asteroids = this.physics.add.group()
+    this.otherPlayers = this.physics.add.group();
+    this.socket.on('currentPlayers', function (players) {
+      Object.keys(players).forEach(function (id) {
+        if (players[id].playerId === self.socket.id) {
+          addPlayer(self, players[id]);
+        } else {
+          addOtherPlayers(self, players[id]);
+        }
+      });
+    });
+    this.socket.on('newPlayer', function (playerInfo) {
+      addOtherPlayers(self, playerInfo);
+    });
+    this.socket.on('disconnect', function (playerId) {
+      self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+        if (playerId === otherPlayer.playerId) {
+          otherPlayer.destroy();
+        }
+      });
+    });
 
-    //Collision Physics
-    this.physics.add.collider(player, rocketPad)
-    this.physics.add.collider(player, asteroids)
-    //Cursors
-    cursors = this.input.keyboard.createCursorKeys();
+    1
+this.cursors = this.input.keyboard.createCursorKeys();
 
-    //Functions
-    createAsteroid()
 
-    //Adding Text
 
-    fuelText = this.add.text(16, 16, 'Fuel: ' + fuel, { fontSize: '32px', fill: '#FFFFFF' });
+
+
+
+
+
+
+
+
+
+
+
+    // this.socket = io();
+    // //Player(Rocket)
+    // player = this.physics.add.sprite(35, 250, 'rocket')
+    // player.setBounce(0.2);
+    // player.setCollideWorldBounds(true);
+    // //Astronaut
+    // astronaut = this.physics.add.sprite(1200, 0, 'astronaut')
+    // astronaut.setScale(.5)
+    // astronaut.body.allowGravity = false
+    // //Platform
+    // rocketPad = this.physics.add.sprite(35, 290, 'platform')
+    // rocketPad.body.allowGravity = false;
+    // rocketPad.body.immovable = true;
+    // //Asteroids
+    // asteroids = this.physics.add.group()
+
+    // //Collision Physics
+    // this.physics.add.collider(player, rocketPad)
+    // this.physics.add.collider(player, asteroids)
+    // //Cursors
+    // cursors = this.input.keyboard.createCursorKeys();
+
+    // //Functions
+    // createAsteroid()
+
+    // //Adding Text
+
+    // fuelText = this.add.text(16, 16, 'Fuel: ' + fuel, { fontSize: '32px', fill: '#FFFFFF' });
 
 
 
@@ -82,60 +121,96 @@ function create() {
 
 function update(){
 
-    //Movement
-    if(cursors.left.isDown){
-        player.setVelocityX(-160);
-    }
-    else if(cursors.right.isDown){
-        player.setVelocityX(160)
-    }
-    else{
-        player.setVelocityX(0)
-    }
-    if(cursors.up.isDown){
-        player.setVelocityY(-200)
-    }
+
+
+
+
+
+
+
+
+
+    // //Movement
+    // if(cursors.left.isDown){
+    //     player.setVelocityX(-160);
+    // }
+    // else if(cursors.right.isDown){
+    //     player.setVelocityX(160)
+    // }
+    // else{
+    //     player.setVelocityX(0)
+    // }
+    // if(cursors.up.isDown){
+    //     player.setVelocityY(-200)
+    // }
 
     
-    //Functions
-    floatingAstronaut()
+    // //Functions
+    // floatingAstronaut()
 
-    //Changing Text
+    // //Changing Text
     
 
     
 }
 
 
-function createAsteroid(){
+// function createAsteroid(){
  
-    setInterval(function(){
-        var rock = asteroids.create(1390, Phaser.Math.Between(0,500), 'asteroid')
-        rock.body.immovable = true
-        rock.body.allowGravity = false
-        rock.setVelocity(-300, 0)
-    }, 300)
+//     setInterval(function(){
+//         var rock = asteroids.create(1390, Phaser.Math.Between(0,500), 'asteroid')
+//         rock.body.immovable = true
+//         rock.body.allowGravity = false
+//         rock.setVelocity(-300, 0)
+//     }, 300)
 
+// }
+
+// function floatingAstronaut(){
+//     //Moving Astronaut up and down
+// if(astroPosition < 490){
+//     astronaut.y += .8;
+//     astronaut.angle +=.5
+//     astroPosition += 1
+//     //console.log(astroPosition, '1')
+//   }
+//   if(astroPosition >= 490){
+//     astronaut.y -= .8
+//     astronaut.angle +=.5
+//     astroPosition += 1
+//     //console.log(astroPosition, '2')
+//   }
+//   if(astroPosition >= 900){
+//     astroPosition = 10
+//     //console.log(astroPosition, '3')
+//   }
+// }
+
+
+function addPlayer(self, playerInfo) {
+  self.rocket = self.physics.add.image(playerInfo.x, playerInfo.y, 'rocket').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+  if (playerInfo.team === 'blue') {
+    self.rocket.setTint(0x0000ff);
+  } else {
+    self.rocket.setTint(0xff0000);
+  }
+  self.rocket.setDrag(100);
+  self.rocket.setAngularDrag(100);
+  self.rocket.setMaxVelocity(200);
+
+  self.rocket.setCollideWorldBounds(true);
 }
 
-function floatingAstronaut(){
-    //Moving Astronaut up and down
-if(astroPosition < 490){
-    astronaut.y += .8;
-    astronaut.angle +=.5
-    astroPosition += 1
-    //console.log(astroPosition, '1')
+function addOtherPlayers(self, playerInfo) {
+    const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'rocket').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+    if (playerInfo.team === 'blue') {
+      otherPlayer.setTint(0x0000ff);
+    } else {
+      otherPlayer.setTint(0xff0000);
+    }
+    otherPlayer.playerId = playerInfo.playerId;
+    self.otherPlayers.add(otherPlayer);
   }
-  if(astroPosition >= 490){
-    astronaut.y -= .8
-    astronaut.angle +=.5
-    astroPosition += 1
-    //console.log(astroPosition, '2')
-  }
-  if(astroPosition >= 900){
-    astroPosition = 10
-    //console.log(astroPosition, '3')
-  }
-}
+
 
 console.log('Compiled')
