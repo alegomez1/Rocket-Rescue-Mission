@@ -144,8 +144,6 @@ function createAsteroid(){
        rock = asteroids.create(1490, Math.floor(Math.random() * 500), 'asteroid')
       rock.body.gravity.x = -900
     }, 100)
-
-    
 }
 
 function checkGameOver(){

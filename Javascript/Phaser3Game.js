@@ -3,7 +3,6 @@
 // import {LoadScene} from "./scenes/LoadScene";
 // import {MenuScene} from "./scenes/MenuScene";
 
-console.log("Working")
 
 var config = {
     type: Phaser.AUTO,
@@ -26,12 +25,12 @@ var config = {
 var game = new Phaser.Game(config);
 
 let player
-let platforms
+let rocketPad
 let asteroids
 let fuel = 600
 let onPlatform = false
 let gameOver = false
-let rock
+
 let astronaut
 let fuelCan
 var emmiter
@@ -47,12 +46,40 @@ function preload(){
 }
 
 function create() {
-
-    player = this.physics.add.sprite(35, 350, 'rocket')
+    //Player(Rocket)
+    player = this.physics.add.sprite(35, 250, 'rocket')
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+    //Astronaut
+    astronaut = this.physics.add.sprite(1200, 0, 'astronaut')
+    astronaut.setScale(.5)
+    astronaut.body.allowGravity = false
+    //Platform
+    rocketPad = this.physics.add.sprite(35, 290, 'platform')
+    rocketPad.body.allowGravity = false;
+    rocketPad.body.immovable = true;
+    //Asteroids
+    // asteroids = this.physics.add.group({
+    //     key: 'asteroid',
+    //     repeat: 11,
+    //     setXY: { x: 100, y: 100, stepX: 70}
+    // })
+    asteroids = this.physics.add.group()
 
+
+
+
+
+    //Collision Physics
+    this.physics.add.collider(player, rocketPad)
+    this.physics.add.collider(player, asteroids)
+    //Cursors
     cursors = this.input.keyboard.createCursorKeys();
+
+    //Functions
+    createAsteroid()
+
+
 }
 
 function update(){
@@ -65,11 +92,58 @@ function update(){
         player.setVelocityX(160)
     }
     if(cursors.up.isDown){
-        player.setVelocityY(-100)
+        player.setVelocityY(-200)
     }
    
     
+    //Functions
+    floatingAstronaut()
+
     
 }
 
-console.log('NEW')
+
+function createAsteroid(){
+ 
+    
+    
+    setInterval(function(){
+        var rock = asteroids.create(900, 250, 'asteroid')
+        rock.body.immovable = true
+        rock.body.allowGravity = false
+        rock.setVelocity(-300, 0)
+    }, 1000)
+
+
+    //asteroids = this.physics.add.image(1200, 250, 'asteroid')
+    // this.asteroids.add.sprite(rock)
+
+    // setInterval(function(){
+    //     rock = asteroids.physics.add.sprite(1490, Math.floor(Math.random() * 500), 'asteroid')
+    //   rock.body.gravity.x = -900
+    // }, 100)
+
+    console.log("makasdfasdfing rocks")
+}
+
+function floatingAstronaut(){
+    //Moving Astronaut up and down
+if(astroPosition < 490){
+    astronaut.y += .8;
+    astronaut.angle +=.5
+    astroPosition += 1
+    //console.log(astroPosition, '1')
+  }
+  if(astroPosition >= 490){
+    astronaut.y -= .8
+    astronaut.angle +=.5
+    astroPosition += 1
+    //console.log(astroPosition, '2')
+  }
+  if(astroPosition >= 900){
+    astroPosition = 10
+    //console.log(astroPosition, '3')
+  }
+}
+
+console.log('TESSSST')
