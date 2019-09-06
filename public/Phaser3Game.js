@@ -27,7 +27,7 @@ var game = new Phaser.Game(config);
 let player
 let rocketPad
 let asteroids
-let fuel = 900
+let fuel = 200
 let onPlatform = false
 let gameOver = false
 let fuelText;
@@ -74,7 +74,7 @@ function create() {
 
     //Adding Text
 
-    fuelText = this.add.text(16, 16, 'Fuel: ' + fuel, { fontSize: '32px', fill: '#FFFFFF' });
+    fuelText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#FFFFFF' });
 
 
 
@@ -86,17 +86,21 @@ function update(){
 
 
     //Movement
-    if(cursors.left.isDown){
+    if(cursors.left.isDown && fuel>0){
         player.setVelocityX(-160);
+        fuel --
     }
-    else if(cursors.right.isDown){
+    else if(cursors.right.isDown && fuel>0){
         player.setVelocityX(160)
+        fuel --
     }
     else{
         player.setVelocityX(0)
     }
-    if(cursors.up.isDown){
+    if(cursors.up.isDown && fuel>0){
         player.setVelocityY(-200)
+        fuel --
+        
     }
 
     
@@ -104,7 +108,7 @@ function update(){
     floatingAstronaut()
 
     //Changing Text
-    
+    fuelText.text = 'Fuel: ' + fuel + ' units'
 
     
 }
