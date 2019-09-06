@@ -105,25 +105,13 @@ function update(){
 
 function createAsteroid(){
  
-    
-    
     setInterval(function(){
-        var rock = asteroids.create(900, 250, 'asteroid')
+        var rock = asteroids.create(1390, Phaser.Math.Between(0,500), 'asteroid')
         rock.body.immovable = true
         rock.body.allowGravity = false
         rock.setVelocity(-300, 0)
-    }, 1000)
+    }, 300)
 
-
-    //asteroids = this.physics.add.image(1200, 250, 'asteroid')
-    // this.asteroids.add.sprite(rock)
-
-    // setInterval(function(){
-    //     rock = asteroids.physics.add.sprite(1490, Math.floor(Math.random() * 500), 'asteroid')
-    //   rock.body.gravity.x = -900
-    // }, 100)
-
-    console.log("makasdfasdfing rocks")
 }
 
 function floatingAstronaut(){
