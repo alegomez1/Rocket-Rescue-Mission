@@ -14,7 +14,6 @@ let rock
 let astronaut
 let fuelCan
 var emmiter
-
 let astroPosition = 0
 
 function preload() {
@@ -22,7 +21,6 @@ function preload() {
   game.load.image('platform', "images/landingPad.png")
   game.load.image('asteroid', 'images/asteroid.png')
   game.load.image('smoke', 'images/smoke.png')
-  game.load.image('orangeSmoke', 'images/orangeSmoke.png')
   game.load.image('astronaut', 'images/astronaut.png')
   game.load.image('fuelCan', 'images/fuel.png')
 
