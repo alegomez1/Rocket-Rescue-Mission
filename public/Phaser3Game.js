@@ -11,8 +11,10 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 500},
-            debug: false
+            gravity: {
+                y: 500
+            },
+            debug: true
         }
     },
     scene: {
@@ -36,7 +38,7 @@ let fuelCans
 var emmiter
 let astroPosition = 0
 
-function preload(){
+function preload() {
     this.load.image('rocket', "./images/RocketSprite.png")
     this.load.image('platform', "./images/landingPad.png")
     this.load.image('asteroid', './images/asteroid.png')
@@ -51,6 +53,7 @@ function create() {
     player = this.physics.add.sprite(35, 250, 'rocket')
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+    player.setSize(24,25)
     //Astronaut
     astronaut = this.physics.add.sprite(1200, 0, 'astronaut')
     astronaut.setScale(.5)
@@ -59,6 +62,7 @@ function create() {
     rocketPad = this.physics.add.sprite(35, 290, 'platform')
     rocketPad.body.allowGravity = false;
     rocketPad.body.immovable = true;
+    rocketPad.setSize(75,10) //Alters hitbox
     //Asteroids
     asteroids = this.physics.add.group()
     //Fuel Cans
@@ -72,81 +76,82 @@ function create() {
     createAsteroid()
     createFuel()
     //Adding Text
-     fuelText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#FFFFFF' });
+    fuelText = this.add.text(16, 16, '', {
+        fontSize: '32px',
+        fill: '#FFFFFF'
+    });
 }
 
-function update(){
+function update() {
     //Adds overlap physics to player and fuelcans
     this.physics.add.overlap(player, fuelCans, collectFuel, null, this);
 
     //Movement
-    if(cursors.left.isDown && fuel>0){
+    if (cursors.left.isDown && fuel > 0) {
         player.setVelocityX(-160);
-        fuel --
-    }
-    else if(cursors.right.isDown && fuel>0){
+        fuel--
+    } else if (cursors.right.isDown && fuel > 0) {
         player.setVelocityX(160)
-        fuel --
-    }
-    else{
+        fuel--
+    } else {
         player.setVelocityX(0)
     }
-    if(cursors.up.isDown && fuel>0){
+    if (cursors.up.isDown && fuel > 0) {
         player.setVelocityY(-200)
-        fuel --
-        
-    }
+        fuel--
 
+    }
     //Functions
     floatingAstronaut()
-    
 
     //Changing Text
     fuelText.text = 'Fuel: ' + fuel + ' units'
 
-    
+
 }
-function createAsteroid(){
- 
-    setInterval(function(){
-        var rock = asteroids.create(1390, Phaser.Math.Between(0,700), 'asteroid')
+
+function createAsteroid() {
+    setInterval(function () {
+        var rock = asteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
         rock.body.immovable = true
         rock.body.allowGravity = false
         rock.setVelocity(-300, 0)
     }, 100)
 
 }
-function createFuel(){
-    setInterval(function(){
-        var can = fuelCans.create(1390, Phaser.Math.Between(0,700), 'fuelCan')
+
+function createFuel() {
+    setInterval(function () {
+        var can = fuelCans.create(1390, Phaser.Math.Between(0, 700), 'fuelCan')
         can.body.allowGravity = false
         can.setVelocity(-200, 0)
     }, 2000)
 }
-function collectFuel(player, can){
+
+function collectFuel(player, can) {
     can.destroy(can.x, can.y)
-    fuel+=500
+    fuel += 500
 
 }
 
-function floatingAstronaut(){
+function floatingAstronaut() {
     //Moving Astronaut up and down
-if(astroPosition < 490){
-    astronaut.y += .8;
-    astronaut.angle +=.5
-    astroPosition += 1
-    //console.log(astroPosition, '1')
-  }
-  if(astroPosition >= 490){
-    astronaut.y -= .8
-    astronaut.angle +=.5
-    astroPosition += 1
-    //console.log(astroPosition, '2')
-  }
-  if(astroPosition >= 900){
-    astroPosition = 10
-    //console.log(astroPosition, '3')
-  }
+    if (astroPosition < 490) {
+        astronaut.y += .8;
+        astronaut.angle += .5
+        astroPosition += 1
+        //console.log(astroPosition, '1')
+    }
+    if (astroPosition >= 490) {
+        astronaut.y -= .8
+        astronaut.angle += .5
+        astroPosition += 1
+        //console.log(astroPosition, '2')
+    }
+    if (astroPosition >= 900) {
+        astroPosition = 10
+        //console.log(astroPosition, '3')
+    }
 }
 
 console.log('Compiled')
