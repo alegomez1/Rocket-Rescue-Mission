@@ -27,7 +27,7 @@ var game = new Phaser.Game(config);
 let player
 let rocketPad
 let asteroids
-let fuel = 600
+let fuel = 900
 let onPlatform = false
 let gameOver = false
 let fuelText;
@@ -46,7 +46,6 @@ function preload(){
 }
 
 function create() {
-
 
     this.socket = io();
     //Player(Rocket)
