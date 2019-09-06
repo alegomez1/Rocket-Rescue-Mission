@@ -7,7 +7,7 @@
 var config = {
     type: Phaser.AUTO,
     width: 1300,
-    height: 500,
+    height: 700,
     physics: {
         default: 'arcade',
         arcade: {
@@ -27,12 +27,12 @@ var game = new Phaser.Game(config);
 let player
 let rocketPad
 let asteroids
-let fuel = 200
+let fuel = 10000
 let onPlatform = false
 let gameOver = false
 let fuelText;
 let astronaut
-let fuelCan
+let fuelCans
 var emmiter
 let astroPosition = 0
 
@@ -46,7 +46,6 @@ function preload(){
 }
 
 function create() {
-
 
     //Player(Rocket)
     player = this.physics.add.sprite(35, 250, 'rocket')
@@ -62,28 +61,23 @@ function create() {
     rocketPad.body.immovable = true;
     //Asteroids
     asteroids = this.physics.add.group()
-
+    //Fuel Cans
+    fuelCans = this.physics.add.group()
     //Collision Physics
     this.physics.add.collider(player, rocketPad)
     this.physics.add.collider(player, asteroids)
     //Cursors
     cursors = this.input.keyboard.createCursorKeys();
-
     //Functions
     createAsteroid()
-
+    createFuel()
     //Adding Text
-
-    fuelText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#FFFFFF' });
-
-
-
+     fuelText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#FFFFFF' });
 }
 
 function update(){
-
-
-
+    //Adds overlap physics to player and fuelcans
+    this.physics.add.overlap(player, fuelCans, collectFuel, null, this);
 
     //Movement
     if(cursors.left.isDown && fuel>0){
@@ -103,25 +97,35 @@ function update(){
         
     }
 
-    
     //Functions
     floatingAstronaut()
+    
 
     //Changing Text
     fuelText.text = 'Fuel: ' + fuel + ' units'
 
     
 }
-
-
 function createAsteroid(){
  
     setInterval(function(){
-        var rock = asteroids.create(1390, Phaser.Math.Between(0,500), 'asteroid')
+        var rock = asteroids.create(1390, Phaser.Math.Between(0,700), 'asteroid')
         rock.body.immovable = true
         rock.body.allowGravity = false
         rock.setVelocity(-300, 0)
-    }, 300)
+    }, 100)
+
+}
+function createFuel(){
+    setInterval(function(){
+        var can = fuelCans.create(1390, Phaser.Math.Between(0,700), 'fuelCan')
+        can.body.allowGravity = false
+        can.setVelocity(-200, 0)
+    }, 2000)
+}
+function collectFuel(player, can){
+    can.destroy(can.x, can.y)
+    fuel+=500
 
 }
 
