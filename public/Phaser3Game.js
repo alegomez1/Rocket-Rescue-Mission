@@ -58,6 +58,10 @@ var randomNum
 
 function preload() {
     this.load.image('rocket', "./images/RocketSprite2.png")
+    this.load.image('rocketD1', './images/RocketSpriteD1.png')
+    this.load.image('rocketD2', './images/RocketSpriteD2.png')
+    this.load.image('rocketD3', './images/RocketSpriteD3.png')
+    this.load.image('rocketD4', './images/RocketSpriteD4.png')
     this.load.image('platform', "./images/landingPad.png")
     this.load.image('asteroid', './images/asteroid.png')
     this.load.image('smoke', './images/smoke.png')
@@ -69,6 +73,8 @@ function preload() {
     this.load.audio("femaleThanks", './Music/FemaleThanks.mp3')
     this.load.audio("maleThanks", './Music/MaleThanks.wav')
     this.load.audio("maleThanks2", './Music/MaleThanks2.wav')
+
+    this.load.multiatlas('rocket2', './images/RocketSheet.json', 'images')
 
 }
 
@@ -92,7 +98,7 @@ function create() {
     music.play(musicConfig)
 
     //Player(Rocket)
-    player = this.physics.add.sprite(35, 250, 'rocket')
+    player = this.physics.add.sprite(35, 250, 'rocket2', 'RocketSpriteD4.png')
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player.setSize(24, 25)
@@ -138,6 +144,7 @@ function update() {
     //Adds overlap physics to player and fuelcans
     this.physics.add.overlap(player, fuelCans, collectFuel, null, this);
     this.physics.add.overlap(player, astronaut, rescue, null, this);
+    this.physics.add.overlap(player, asteroids, crash, null, this);
     var rocketConfig = {
         mute: false,
         volume: 1,
@@ -234,7 +241,12 @@ function createAsteroid() {
         tinyRock.setScale(.5)
     }, 500)
 }
+function crash(player, rock){
+    pickup.play()
+    rock.destroy(rock.x, rock.y)
+    player.sprite = ('rocketD4')
 
+}
 function createFuel() {
     setInterval(function () {
         var can = fuelCans.create(1390, Phaser.Math.Between(0, 700), 'fuelCan')
@@ -242,7 +254,6 @@ function createFuel() {
         can.setVelocity(-200, 0)
     }, 2000)
 }
-
 function collectFuel(player, can) {
     pickup.play()
     var test = this.add.text(can.x-5, can.y-5, '+500')
@@ -253,23 +264,28 @@ function collectFuel(player, can) {
     },500)
 }
 
-function floatingAstronaut() {
-    //Moving Astronaut up and down
-    if (astroPosition < 490) {
-        astronaut.y += .8;
-        astronaut.angle += .5
-        astroPosition += 1
-        //console.log(astroPosition, '1')
-    }
-    if (astroPosition >= 490) {
-        astronaut.y -= .8
-        astronaut.angle += .5
-        astroPosition += 1
-        //console.log(astroPosition, '2')
-    }
-    if (astroPosition >= 900) {
-        astroPosition = 10
-        //console.log(astroPosition, '3')
-    }
-}
+
 console.log('Compiled')
+
+
+
+
+// function floatingAstronaut() {
+//     //Moving Astronaut up and down
+//     if (astroPosition < 490) {
+//         astronaut.y += .8;
+//         astronaut.angle += .5
+//         astroPosition += 1
+//         //console.log(astroPosition, '1')
+//     }
+//     if (astroPosition >= 490) {
+//         astronaut.y -= .8
+//         astronaut.angle += .5
+//         astroPosition += 1
+//         //console.log(astroPosition, '2')
+//     }
+//     if (astroPosition >= 900) {
+//         astroPosition = 10
+//         //console.log(astroPosition, '3')
+//     }
+// }
