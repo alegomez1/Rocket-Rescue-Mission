@@ -9,35 +9,6 @@ window.onload = function () {
 
 }
 
-import TitleScene from "./Scenes/TitleScene";
-
-let titleScene = new TitleScene()
-let titleConfig = {
-    type: Phaser.AUTO,
-    width: 1300,
-    height: 700,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: {
-
-            },
-            debug: true
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-}
-let titleGame = new Phaser.Game(titleConfig)
-game.scene.add('TitleScene', titleScene)
-game.scene.start('TitleScene')
-
-
-
-
 
 
 
@@ -87,6 +58,10 @@ var randomNum
 
 function preload() {
     this.load.image('rocket', "./images/RocketSprite2.png")
+    this.load.image('rocketD1', './images/RocketSpriteD1.png')
+    this.load.image('rocketD2', './images/RocketSpriteD2.png')
+    this.load.image('rocketD3', './images/RocketSpriteD3.png')
+    this.load.image('rocketD4', './images/RocketSpriteD4.png')
     this.load.image('platform', "./images/landingPad.png")
     this.load.image('asteroid', './images/asteroid.png')
     this.load.image('smoke', './images/smoke.png')
@@ -98,6 +73,8 @@ function preload() {
     this.load.audio("femaleThanks", './Music/FemaleThanks.mp3')
     this.load.audio("maleThanks", './Music/MaleThanks.wav')
     this.load.audio("maleThanks2", './Music/MaleThanks2.wav')
+
+    this.load.multiatlas('rocket2', './images/RocketSheet.json', 'images')
 
 }
 
@@ -122,6 +99,8 @@ function create() {
 
     //Player(Rocket)
     player = this.physics.add.sprite(35, 250, 'rocket')
+
+    // this.physics.add.sprite(35, 250, 'rocket2', 'RocketSpriteD4.png')
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player.setSize(24, 25)
@@ -156,10 +135,12 @@ function create() {
         fontSize: '32px',
         fill: '#FFFFFF'
     });
-    savedText = this.add.text( 800, 16, '', {
+    savedText = this.add.text(800, 16, '', {
         fontSize: '32px',
         fill: '#FFFFFF'
     })
+
+
 
 }
 
@@ -167,6 +148,9 @@ function update() {
     //Adds overlap physics to player and fuelcans
     this.physics.add.overlap(player, fuelCans, collectFuel, null, this);
     this.physics.add.overlap(player, astronaut, rescue, null, this);
+    this.physics.add.overlap(player, asteroids, crash, null, this);
+
+
     var rocketConfig = {
         mute: false,
         volume: 1,
@@ -211,38 +195,41 @@ function update() {
     fuelText.text = 'Fuel: ' + fuel + ' units'
     savedText.text = 'Astronauts Rescued: ' + totalSaved
 
-        //Random Number Generating
-        randomNum = Phaser.Math.Between(0,2)
+    //Random Number Generating
+    randomNum = Phaser.Math.Between(0, 2)
 
 }
-function createAstronauts(){
-    setInterval(function(){
+
+function createAstronauts() {
+    setInterval(function () {
         var strandedAstronaut = astronaut.create(1450, Phaser.Math.Between(0, 700), 'astronaut')
         strandedAstronaut.body.allowGravity = false
         strandedAstronaut.setScale(.4)
         strandedAstronaut.setVelocity(-300, 0)
     }, 5000)
 }
-function rescue(player, strandedAstronaut){
+
+function rescue(player, strandedAstronaut) {
     var ladyConfig = {
         mute: false,
         volume: 9,
         rate: 1,
-        detune: 0, 
+        detune: 0,
         seek: 0,
         loop: false,
         delay: 0
     }
-    if(randomNum == 0){
+    if (randomNum == 0) {
         femaleThanks.play(ladyConfig)
-    }else if(randomNum == 1){
+    } else if (randomNum == 1) {
         maleThanks.play()
-    }else if(randomNum == 2){
+    } else if (randomNum == 2) {
         maleThanks2.play()
     }
     strandedAstronaut.destroy(strandedAstronaut.x, strandedAstronaut.y)
     totalSaved += 1
 }
+
 function createAsteroid() {
     setInterval(function () {
         var rock = asteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
@@ -250,7 +237,20 @@ function createAsteroid() {
         rock.body.allowGravity = false
         rock.setVelocity(-300, 0)
         rock.angle = Phaser.Math.Between(-180, 180)
+        rock.setScale(1)
+
+        var tinyRock = asteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
+        tinyRock.body.immovable = true
+        tinyRock.body.allowGravity = false
+        tinyRock.setVelocity(-100, 0)
+        tinyRock.angle = Phaser.Math.Between(-180, 180)
+        tinyRock.setScale(.5)
     }, 500)
+}
+function crash(player, rock){
+    pickup.play()
+    rock.destroy(rock.x, rock.y)
+   
 }
 function createFuel() {
     setInterval(function () {
@@ -261,26 +261,37 @@ function createFuel() {
 }
 function collectFuel(player, can) {
     pickup.play()
+    var test = this.add.text(can.x-5, can.y-5, '+500')
     can.destroy(can.x, can.y)
     fuel += 500
+    player.setTexture('rocketD4')
+    setTimeout(function(){
+        test.destroy()
+    },500)
 }
-function floatingAstronaut() {
-    //Moving Astronaut up and down
-    if (astroPosition < 490) {
-        astronaut.y += .8;
-        astronaut.angle += .5
-        astroPosition += 1
-        //console.log(astroPosition, '1')
-    }
-    if (astroPosition >= 490) {
-        astronaut.y -= .8
-        astronaut.angle += .5
-        astroPosition += 1
-        //console.log(astroPosition, '2')
-    }
-    if (astroPosition >= 900) {
-        astroPosition = 10
-        //console.log(astroPosition, '3')
-    }
-}
+
+
 console.log('Compiled')
+
+
+
+
+// function floatingAstronaut() {
+//     //Moving Astronaut up and down
+//     if (astroPosition < 490) {
+//         astronaut.y += .8;
+//         astronaut.angle += .5
+//         astroPosition += 1
+//         //console.log(astroPosition, '1')
+//     }
+//     if (astroPosition >= 490) {
+//         astronaut.y -= .8
+//         astronaut.angle += .5
+//         astroPosition += 1
+//         //console.log(astroPosition, '2')
+//     }
+//     if (astroPosition >= 900) {
+//         astroPosition = 10
+//         //console.log(astroPosition, '3')
+//     }
+// }
