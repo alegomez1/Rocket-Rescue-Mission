@@ -46,6 +46,7 @@ var emmiter
 let astroPosition = 0
 let music
 let pickup
+let rocketSound
 
 
 function preload() {
@@ -57,12 +58,14 @@ function preload() {
     this.load.image('fuelCan', './images/fuel.png')
     this.load.audio("ambient", "./Music/Ambient Space Music - Exoplanet.mp3")
     this.load.audio("pickup", "./Music/Pickup.wav")
+    this.load.audio("rocketSound", "./Music/RTrim2.wav")
 }
 
 function create() {
 
    music = this.sound.add("ambient")
    pickup = this.sound.add("pickup")
+   rocketSound = this.sound.add("rocketSound")
 
 
     var musicConfig = {
@@ -74,6 +77,8 @@ function create() {
         loop: true,
         delay: 0
     }
+
+
 
    music.play(musicConfig)
 
@@ -113,18 +118,33 @@ function create() {
 function update() {
     //Adds overlap physics to player and fuelcans
     this.physics.add.overlap(player, fuelCans, collectFuel, null, this);
+    var rocketConfig = {
+        mute: false,
+        volume: 1,
+        rate: 1,
+        detune: 0,
+        seek: 0,
+        loop: false,
+        delay: 0
+    }
 
     //Movement
     if (cursors.left.isDown && fuel > 0) {
+        rocketSound.play(rocketConfig)
+        rocketSound.stop(rocketConfig)
         player.setVelocityX(-160);
         fuel--
     } else if (cursors.right.isDown && fuel > 0) {
+        rocketSound.play(rocketConfig)
+        rocketSound.stop(rocketConfig)
         player.setVelocityX(160)
         fuel--
     } else {
         player.setVelocityX(0)
     }
     if (cursors.up.isDown && fuel > 0) {
+        rocketSound.play(rocketConfig)
+        rocketSound.stop(rocketConfig)
         player.setVelocityY(-200)
         fuel--
 
@@ -144,6 +164,7 @@ function createAsteroid() {
         rock.body.immovable = true
         rock.body.allowGravity = false
         rock.setVelocity(-300, 0)
+        rock.angle = Phaser.Math.Between(-180, 180)
     }, 100)
 
 }
