@@ -49,6 +49,9 @@ let astroPosition = 0
 let music
 let pickup
 let rocketSound
+let femaleThanks
+let maleThanks
+let maleThanks2
 
 
 function preload() {
@@ -61,6 +64,10 @@ function preload() {
     this.load.audio("ambient", "./Music/Ambient Space Music - Exoplanet.mp3")
     this.load.audio("pickup", "./Music/Pickup.wav")
     this.load.audio("rocketSound", "./Music/RTrim2.wav")
+    this.load.audio("femaleThanks", './Music/FemaleThanks.mp3')
+    this.load.audio("maleThanks", './Music/MaleThanks.mp3')
+    this.load.audio("maleThanks2", './Music/MaleThanks2.mp3')
+
 }
 
 function create() {
@@ -68,6 +75,9 @@ function create() {
     music = this.sound.add("ambient")
     pickup = this.sound.add("pickup")
     rocketSound = this.sound.add("rocketSound")
+    femaleThanks = this.sound.add('femaleThanks')
+    maleThanks = this.sound.add('maleThanks')
+    maleThanks2 = this.sound.add('maleThanks2')
     var musicConfig = {
         mute: false,
         volume: 1,
@@ -178,7 +188,7 @@ function createAstronauts(){
     }, 5000)
 }
 function rescue(player, strandedAstronaut){
-    pickup.play()
+    femaleThanks.play()
     strandedAstronaut.destroy(strandedAstronaut.x, strandedAstronaut.y)
     totalSaved += 1
 }
