@@ -22,7 +22,7 @@ var config = {
             gravity: {
 
             },
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -98,7 +98,9 @@ function create() {
     music.play(musicConfig)
 
     //Player(Rocket)
-    player = this.physics.add.sprite(35, 250, 'rocket2', 'RocketSpriteD4.png')
+    player = this.physics.add.sprite(35, 250, 'rocket')
+
+    // this.physics.add.sprite(35, 250, 'rocket2', 'RocketSpriteD4.png')
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player.setSize(24, 25)
@@ -138,6 +140,8 @@ function create() {
         fill: '#FFFFFF'
     })
 
+
+
 }
 
 function update() {
@@ -145,6 +149,8 @@ function update() {
     this.physics.add.overlap(player, fuelCans, collectFuel, null, this);
     this.physics.add.overlap(player, astronaut, rescue, null, this);
     this.physics.add.overlap(player, asteroids, crash, null, this);
+
+
     var rocketConfig = {
         mute: false,
         volume: 1,
@@ -236,7 +242,7 @@ function createAsteroid() {
         var tinyRock = asteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
         tinyRock.body.immovable = true
         tinyRock.body.allowGravity = false
-        tinyRock.setVelocity(-400, 0)
+        tinyRock.setVelocity(-100, 0)
         tinyRock.angle = Phaser.Math.Between(-180, 180)
         tinyRock.setScale(.5)
     }, 500)
@@ -244,8 +250,7 @@ function createAsteroid() {
 function crash(player, rock){
     pickup.play()
     rock.destroy(rock.x, rock.y)
-    player.sprite = ('rocketD4')
-
+   
 }
 function createFuel() {
     setInterval(function () {
@@ -259,6 +264,7 @@ function collectFuel(player, can) {
     var test = this.add.text(can.x-5, can.y-5, '+500')
     can.destroy(can.x, can.y)
     fuel += 500
+    player.setTexture('rocketD4')
     setTimeout(function(){
         test.destroy()
     },500)
