@@ -52,6 +52,7 @@ let rocketSound
 let femaleThanks
 let maleThanks
 let maleThanks2
+var randomNum
 
 
 function preload() {
@@ -65,8 +66,8 @@ function preload() {
     this.load.audio("pickup", "./Music/Pickup.wav")
     this.load.audio("rocketSound", "./Music/RTrim2.wav")
     this.load.audio("femaleThanks", './Music/FemaleThanks.mp3')
-    this.load.audio("maleThanks", './Music/MaleThanks.mp3')
-    this.load.audio("maleThanks2", './Music/MaleThanks2.mp3')
+    this.load.audio("maleThanks", './Music/MaleThanks.wav')
+    this.load.audio("maleThanks2", './Music/MaleThanks2.wav')
 
 }
 
@@ -129,6 +130,7 @@ function create() {
         fontSize: '32px',
         fill: '#FFFFFF'
     })
+
 }
 
 function update() {
@@ -178,6 +180,10 @@ function update() {
     //Changing Text
     fuelText.text = 'Fuel: ' + fuel + ' units'
     savedText.text = 'Astronauts Rescued: ' + totalSaved
+
+        //Random Number Generating
+        randomNum = Phaser.Math.Between(0,2)
+
 }
 function createAstronauts(){
     setInterval(function(){
@@ -188,7 +194,22 @@ function createAstronauts(){
     }, 5000)
 }
 function rescue(player, strandedAstronaut){
-    femaleThanks.play()
+    var ladyConfig = {
+        mute: false,
+        volume: 9,
+        rate: 1,
+        detune: 0, 
+        seek: 0,
+        loop: false,
+        delay: 0
+    }
+    if(randomNum == 0){
+        femaleThanks.play(ladyConfig)
+    }else if(randomNum == 1){
+        maleThanks.play()
+    }else if(randomNum == 2){
+        maleThanks2.play()
+    }
     strandedAstronaut.destroy(strandedAstronaut.x, strandedAstronaut.y)
     totalSaved += 1
 }
@@ -200,7 +221,6 @@ function createAsteroid() {
         rock.setVelocity(-300, 0)
         rock.angle = Phaser.Math.Between(-180, 180)
     }, 500)
-
 }
 function createFuel() {
     setInterval(function () {
@@ -209,12 +229,10 @@ function createFuel() {
         can.setVelocity(-200, 0)
     }, 2000)
 }
-
 function collectFuel(player, can) {
     pickup.play()
     can.destroy(can.x, can.y)
     fuel += 500
-
 }
 function floatingAstronaut() {
     //Moving Astronaut up and down
