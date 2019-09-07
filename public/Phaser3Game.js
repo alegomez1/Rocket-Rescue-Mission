@@ -19,9 +19,9 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: {
-                y: 500
+                
             },
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -50,7 +50,7 @@ let rocketSound
 
 
 function preload() {
-    this.load.image('rocket', "./images/RocketSprite.png")
+    this.load.image('rocket', "./images/RocketSprite2.png")
     this.load.image('platform', "./images/landingPad.png")
     this.load.image('asteroid', './images/asteroid.png')
     this.load.image('smoke', './images/smoke.png')
@@ -87,6 +87,10 @@ function create() {
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player.setSize(24,25)
+    player.setDrag(1000);
+    player.setAngularDrag(900);
+    player.setMaxVelocity(600);
+    player.angle = -90
     //Astronaut
     astronaut = this.physics.add.sprite(1200, 0, 'astronaut')
     astronaut.setScale(.5)
@@ -106,7 +110,7 @@ function create() {
     //Cursors
     cursors = this.input.keyboard.createCursorKeys();
     //Functions
-    createAsteroid()
+    // createAsteroid()
     createFuel()
     //Adding Text
     fuelText = this.add.text(16, 16, '', {
@@ -132,22 +136,28 @@ function update() {
     if (cursors.left.isDown && fuel > 0) {
         rocketSound.play(rocketConfig)
         rocketSound.stop(rocketConfig)
-        player.setVelocityX(-160);
+        // player.setVelocityX(-160);
+        player.setAngularVelocity(-150);
         fuel--
     } else if (cursors.right.isDown && fuel > 0) {
         rocketSound.play(rocketConfig)
         rocketSound.stop(rocketConfig)
-        player.setVelocityX(160)
+        // player.setVelocityX(160)
+        player.setAngularVelocity(150);
         fuel--
     } else {
-        player.setVelocityX(0)
+        player.setAngularVelocity(0);
     }
+
     if (cursors.up.isDown && fuel > 0) {
         rocketSound.play(rocketConfig)
         rocketSound.stop(rocketConfig)
-        player.setVelocityY(-200)
+        // player.setVelocityY(-200)
+        this.physics.velocityFromRotation(player.rotation, 600, player.body.acceleration);
         fuel--
 
+    }else{
+        player.setAcceleration(0)
     }
     //Functions
     floatingAstronaut()
