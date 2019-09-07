@@ -3,6 +3,13 @@
 // import {LoadScene} from "./scenes/LoadScene";
 // import {MenuScene} from "./scenes/MenuScene";
 
+window.onload = function() {
+    var context = new AudioContext();
+    context.resume()
+    
+  }
+  
+
 
 var config = {
     type: Phaser.AUTO,
@@ -14,7 +21,7 @@ var config = {
             gravity: {
                 y: 500
             },
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -37,6 +44,9 @@ let astronaut
 let fuelCans
 var emmiter
 let astroPosition = 0
+let music
+let pickup
+
 
 function preload() {
     this.load.image('rocket', "./images/RocketSprite.png")
@@ -45,9 +55,27 @@ function preload() {
     this.load.image('smoke', './images/smoke.png')
     this.load.image('astronaut', './images/astronaut.png')
     this.load.image('fuelCan', './images/fuel.png')
+    this.load.audio("ambient", "./Music/Ambient Space Music - Exoplanet.mp3")
+    this.load.audio("pickup", "./Music/Pickup.wav")
 }
 
 function create() {
+
+   music = this.sound.add("ambient")
+   pickup = this.sound.add("pickup")
+
+
+    var musicConfig = {
+        mute: false,
+        volume: 1,
+        rate: 1,
+        detune: 0,
+        seek: 0,
+        loop: true,
+        delay: 0
+    }
+
+   music.play(musicConfig)
 
     //Player(Rocket)
     player = this.physics.add.sprite(35, 250, 'rocket')
@@ -129,6 +157,7 @@ function createFuel() {
 }
 
 function collectFuel(player, can) {
+    pickup.play()
     can.destroy(can.x, can.y)
     fuel += 500
 
