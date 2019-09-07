@@ -8,6 +8,7 @@ window.onload = function () {
     context.resume()
 
 }
+import Phaser from "phaser"
 
 import TitleScene from "./Scenes/TitleScene";
 
