@@ -22,7 +22,7 @@ var config = {
             gravity: {
 
             },
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -36,7 +36,8 @@ var game = new Phaser.Game(config);
 
 let player
 let rocketPad
-let asteroids
+let bigAsteroids
+let smallAsteroids
 let fuel = 10000
 let totalSaved = 0
 let onPlatform = false
@@ -49,11 +50,12 @@ var emmiter
 let astroPosition = 0
 let music
 let pickup
-let rocketSound
+let crash1
 let femaleThanks
 let maleThanks
 let maleThanks2
 var randomNum
+var damageCounter = 0;
 
 
 function preload() {
@@ -73,6 +75,7 @@ function preload() {
     this.load.audio("femaleThanks", './Music/FemaleThanks.mp3')
     this.load.audio("maleThanks", './Music/MaleThanks.wav')
     this.load.audio("maleThanks2", './Music/MaleThanks2.wav')
+    this.load.audio("crash1", './Music/Crash1.wav')
 
     this.load.multiatlas('rocket2', './images/RocketSheet.json', 'images')
 
@@ -86,6 +89,7 @@ function create() {
     femaleThanks = this.sound.add('femaleThanks')
     maleThanks = this.sound.add('maleThanks')
     maleThanks2 = this.sound.add('maleThanks2')
+    crash1 = this.sound.add("crash1")
     var musicConfig = {
         mute: false,
         volume: 1,
@@ -118,12 +122,12 @@ function create() {
     rocketPad.body.immovable = true;
     rocketPad.setSize(75, 10) //Alters hitbox
     //Asteroids
-    asteroids = this.physics.add.group()
+    bigAsteroids = this.physics.add.group()
+    smallAsteroids = this.physics.add.group()
     //Fuel Cans
     fuelCans = this.physics.add.group()
     //Collision Physics
     this.physics.add.collider(player, rocketPad)
-    this.physics.add.collider(player, asteroids)
     //Cursors
     cursors = this.input.keyboard.createCursorKeys();
     //Functions
@@ -148,7 +152,8 @@ function update() {
     //Adds overlap physics to player and fuelcans
     this.physics.add.overlap(player, fuelCans, collectFuel, null, this);
     this.physics.add.overlap(player, astronaut, rescue, null, this);
-    this.physics.add.overlap(player, asteroids, crash, null, this);
+    this.physics.add.overlap(player, bigAsteroids, crashBig, null, this);
+    this.physics.add.overlap(player, smallAsteroids, crashSmall, null, this);
 
 
     var rocketConfig = {
@@ -232,14 +237,14 @@ function rescue(player, strandedAstronaut) {
 
 function createAsteroid() {
     setInterval(function () {
-        var rock = asteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
+        var rock = bigAsteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
         rock.body.immovable = true
         rock.body.allowGravity = false
         rock.setVelocity(-300, 0)
         rock.angle = Phaser.Math.Between(-180, 180)
         rock.setScale(1)
 
-        var tinyRock = asteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
+        var tinyRock = smallAsteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
         tinyRock.body.immovable = true
         tinyRock.body.allowGravity = false
         tinyRock.setVelocity(-100, 0)
@@ -247,27 +252,65 @@ function createAsteroid() {
         tinyRock.setScale(.5)
     }, 500)
 }
-function crash(player, rock){
-    pickup.play()
+
+function crashSmall(player, rock) {
+    crash1.play()
     rock.destroy(rock.x, rock.y)
-   
+
+    if(damageCounter == 0){
+        player.setTexture('rocketD1')
+        damageCounter ++
+    }else if (damageCounter == 1){
+        player.setTexture('rocketD2')
+        damageCounter ++
+    }else if (damageCounter == 2){
+        player.setTexture('rocketD3')
+        damageCounter ++
+    }else if (damageCounter == 3){
+        player.setTexture('rocketD4')
+        damageCounter ++
+    }
 }
+
+function crashBig(player, rock) {
+
+    crash1.play()
+    rock.destroy(rock.x, rock.y)
+
+    if(damageCounter == 0){
+        player.setTexture('rocketD2')
+        damageCounter +=2
+    }else if (damageCounter == 1){
+        player.setTexture('rocketD3')
+        damageCounter +=2
+    }
+    else if (damageCounter == 2){
+        player.setTexture('rocketD4')
+        damageCounter +=2
+    }else if (damageCounter == 3){
+        player.setTexture('rocketD4')
+        damageCounter +=2
+    }
+}
+
 function createFuel() {
     setInterval(function () {
         var can = fuelCans.create(1390, Phaser.Math.Between(0, 700), 'fuelCan')
         can.body.allowGravity = false
         can.setVelocity(-200, 0)
+        can.setScale(.9)
     }, 2000)
 }
+
 function collectFuel(player, can) {
     pickup.play()
-    var test = this.add.text(can.x-5, can.y-5, '+500')
+    var test = this.add.text(can.x - 5, can.y - 5, '+500')
     can.destroy(can.x, can.y)
     fuel += 500
-    player.setTexture('rocketD4')
-    setTimeout(function(){
+
+    setTimeout(function () {
         test.destroy()
-    },500)
+    }, 500)
 }
 
 
