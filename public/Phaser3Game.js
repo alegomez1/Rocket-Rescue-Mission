@@ -8,36 +8,6 @@ window.onload = function () {
     context.resume()
 
 }
-import Phaser from "phaser"
-
-import TitleScene from "./Scenes/TitleScene";
-
-let titleScene = new TitleScene()
-let titleConfig = {
-    type: Phaser.AUTO,
-    width: 1300,
-    height: 700,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: {
-
-            },
-            debug: true
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-}
-let titleGame = new Phaser.Game(titleConfig)
-game.scene.add('TitleScene', titleScene)
-game.scene.start('TitleScene')
-
-
-
 
 
 
@@ -67,7 +37,7 @@ var game = new Phaser.Game(config);
 let player
 let rocketPad
 let asteroids
-let fuel = 10000
+let fuel = 500
 let totalSaved = 0
 let onPlatform = false
 let gameOver = false
