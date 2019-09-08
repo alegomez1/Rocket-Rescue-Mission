@@ -34,7 +34,7 @@ var damageCounter = 0;
 let healthPacks
 let cursors
 
-import rocket from "../Assets/Images/RocketSprite2.png"
+
 import rocketD1 from '../Assets/Images/RocketSpriteD1.png'
 import rocketD2 from '../Assets/Images/RocketSpriteD2.png'
 import rocketD3 from '../Assets/Images/RocketSpriteD3.png'
@@ -73,7 +73,7 @@ class gameScene extends Phaser.Scene {
     
 
  preload() {
-        this.load.image('rocket', rocket)
+        this.load.image('rocket', rocketD1)
         this.load.image('rocketD1', rocketD1)
         this.load.image('rocketD2', rocketD2)
         this.load.image('rocketD3', rocketD3)
@@ -94,8 +94,7 @@ class gameScene extends Phaser.Scene {
     }
 
     create() {
-        player = this.physics.add.sprite(35, 250, 'rocket')
-        console.log("WORK")
+        player = this.physics.add.sprite(35, 250, rocketD1)
         //Music
         // music = this.sound.add("ambient")
         // refuel = this.sound.add("refuel")
@@ -127,7 +126,7 @@ class gameScene extends Phaser.Scene {
         player.setDrag(1000);
         player.setAngularDrag(900);
         player.setMaxVelocity(600);
-        player.angle = -90
+
         //Astronaut
         astronaut = this.physics.add.group()
         //Health Packs
@@ -315,6 +314,7 @@ class gameScene extends Phaser.Scene {
         //Random Number Generating
         randomNum = Phaser.Math.Between(0, 2)
 
+        //Check damage
         if (damageCounter == 0) {
             player.setTexture('rocket')
             healthText.text = 'Health: 100%'
@@ -336,12 +336,7 @@ class gameScene extends Phaser.Scene {
             healthText.text = 'Health: 1%'
 
         } else if (damageCounter > 4) {
-            gameOverText.text = "Game Over"
-            bigAsteroids.destroy()
-            smallAsteroids.destroy()
-            healthPacks.destroy()
-            fuelCans.destroy()
-            player.destroy()
+            this.scene.start("gameOver");
         }
 
         if (totalSaved == 5) {

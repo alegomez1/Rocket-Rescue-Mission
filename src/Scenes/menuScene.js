@@ -1,6 +1,6 @@
 
 var button
-import rocket from '../Assets/Images/RocketSprite.png'
+import rocketTEXT from '../Assets/Images/RocketSprite2.png'
 let image
 
 export default class menuScene extends Phaser.Scene {
@@ -9,7 +9,7 @@ export default class menuScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('rocket', rocket)
+        this.load.image('rocket', rocketTEXT)
         image = this.physics.add.group()
 
     }
