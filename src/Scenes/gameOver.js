@@ -1,6 +1,7 @@
-import menuScene from "./menuScene";
+import gameScene from "./gameScene";
+var tryAgain
 
-class gameScene extends Phaser.Scene {
+class gameOver extends Phaser.Scene {
     constructor() {
         super({
             key: 'gameOver'
@@ -11,9 +12,15 @@ class gameScene extends Phaser.Scene {
     }
     create(){
         this.add.text(400, 200, 'Game Over', {
-            fontSize: '30px',
+            fontSize: '80px',
             fill: '#FFFFFF'
         })
+        tryAgain = this.add.text(350, 400, 'Refresh to try again', {
+            fontSize: '50px',
+            fill: '#FFFFFF'
+        })
+
+
     }
     update(){
 
@@ -22,4 +29,4 @@ class gameScene extends Phaser.Scene {
 }
 
 
-export default gameScene
+export default gameOver

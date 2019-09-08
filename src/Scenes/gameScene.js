@@ -62,7 +62,7 @@ import healthPack from '../assets/images/healthPack.png'
 
 
 
-class gameScene extends Phaser.Scene {
+export default class gameScene extends Phaser.Scene {
     constructor() {
         super({
             key: 'gameScene'
@@ -173,7 +173,7 @@ class gameScene extends Phaser.Scene {
             strandedAstronaut.body.allowGravity = false
             strandedAstronaut.setScale(.4)
             strandedAstronaut.setVelocity(-300, 0)
-        }, 5000)
+        }, 50)
     }
     rescue(player, strandedAstronaut) {
         var ladyConfig = {
@@ -259,11 +259,6 @@ class gameScene extends Phaser.Scene {
             damageCounter -= 1
         }
     }
-
-
-
-
-
     update() {
         //Adds overlap physics to player and fuelcans
         this.physics.add.overlap(player, fuelCans, this.collectFuel, null, this);
@@ -338,10 +333,8 @@ class gameScene extends Phaser.Scene {
         } else if (damageCounter > 4) {
             this.scene.start("gameOver");
         }
-
         if (totalSaved == 5) {
-            gameOverText.text = "You Won!"
-            player.destroy()
+            this.scene.start("win")
         }
 
     }
@@ -351,4 +344,3 @@ class gameScene extends Phaser.Scene {
 
 }
 
-export default gameScene
