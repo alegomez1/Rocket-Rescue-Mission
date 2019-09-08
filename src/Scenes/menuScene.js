@@ -1,5 +1,7 @@
 
 var button
+import rocket from '../Assets/Images/RocketSprite.png'
+let image
 
 export default class menuScene extends Phaser.Scene {
     constructor() {
@@ -7,7 +9,9 @@ export default class menuScene extends Phaser.Scene {
     }
 
     preload() {
-        
+        this.load.image('rocket', rocket)
+        image = this.physics.add.group()
+
     }
     create(){
 
@@ -38,21 +42,25 @@ export default class menuScene extends Phaser.Scene {
             fill: "#FFFFFF",
         })
 
-
-
-
-
         //Start Game Button
         button = this.add.text(400,450, 'START GAME', {
             fontSize: '80px',
             fill: '#FFFFFF'
         })
+        var newRocket = image.create(button.x -50, button.y+45, 'rocket')
+        newRocket.alpha = 0
+        newRocket.setScale(2)
+        
+        button.alpha = 0.5;
         button.setInteractive().on("pointerover", () => {
             document.body.style.cursor = "pointer";
             button.alpha = 1;
+            
+            newRocket.alpha = 1
         }).on("pointerout", () => {
             document.body.style.cursor = "auto";
             button.alpha = 0.5;
+            newRocket.alpha = 0
         }).on("pointerdown", () => {
             document.body.style.cursor = "auto";
 
