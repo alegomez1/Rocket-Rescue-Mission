@@ -1,10 +1,7 @@
 window.onload = function () {
     var context = new AudioContext();
     context.resume()
-
 }
-
-
 
 let player
 let rocketPad
@@ -70,9 +67,9 @@ export default class gameScene extends Phaser.Scene {
 
     }
 
-    
 
- preload() {
+
+    preload() {
         this.load.image('rocket', rocketD1)
         this.load.image('rocketD1', rocketD1)
         this.load.image('rocketD2', rocketD2)
@@ -173,7 +170,7 @@ export default class gameScene extends Phaser.Scene {
             strandedAstronaut.body.allowGravity = false
             strandedAstronaut.setScale(.4)
             strandedAstronaut.setVelocity(-300, 0)
-        }, 50)
+        }, 4000)
     }
     rescue(player, strandedAstronaut) {
         var ladyConfig = {
@@ -279,12 +276,12 @@ export default class gameScene extends Phaser.Scene {
 
         //Movement
         if (cursors.left.isDown && fuel > 0) {
-           
+
             // player.setVelocityX(-160);
             player.setAngularVelocity(-200);
 
         } else if (cursors.right.isDown && fuel > 0) {
-           
+
             // player.setVelocityX(160)
             player.setAngularVelocity(200);
 
@@ -293,7 +290,7 @@ export default class gameScene extends Phaser.Scene {
         }
 
         if (cursors.up.isDown && fuel > 0) {
-           
+
             // player.setVelocityY(-200)
             this.physics.velocityFromRotation(player.rotation, 300, player.body.acceleration);
             fuel--
@@ -338,9 +335,4 @@ export default class gameScene extends Phaser.Scene {
         }
 
     }
-
-  
-
-
 }
-
