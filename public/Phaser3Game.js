@@ -34,13 +34,14 @@ let player
 let rocketPad
 let bigAsteroids
 let smallAsteroids
-let fuel = 10000
+let fuel = 1000
 let totalSaved = 0
 let onPlatform = false
 let gameOver = false
 let fuelText;
 let savedText;
 let healthText;
+let gameOverText;
 let astronaut
 let fuelCans
 var emmiter
@@ -110,6 +111,7 @@ function create() {
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player.setSize(24, 25)
+    player.setScale(1.3)
     player.setDrag(1000);
     player.setAngularDrag(900);
     player.setMaxVelocity(600);
@@ -145,6 +147,10 @@ function create() {
         fontSize: '32px',
         fill: '#FFFFFF'
     })
+    gameOverText = this.add.text(400, 300, '', {
+        fontSize: '90px',
+        fill : '#FFFFFF'
+    })
 
 
 
@@ -174,13 +180,13 @@ function update() {
         rocketSound.stop(rocketConfig)
         // player.setVelocityX(-160);
         player.setAngularVelocity(-200);
-        fuel--
+        
     } else if (cursors.right.isDown && fuel > 0) {
         rocketSound.play(rocketConfig)
         rocketSound.stop(rocketConfig)
         // player.setVelocityX(160)
         player.setAngularVelocity(200);
-        fuel--
+        
     } else {
         player.setAngularVelocity(0);
     }
@@ -225,10 +231,16 @@ function update() {
         healthText.text = 'Health: 1%'
 
     }else if (damageCounter > 4){
+        gameOverText.text = "Game Over"
         bigAsteroids.destroy()
         smallAsteroids.destroy()
         healthPacks.destroy()
         fuelCans.destroy()
+        player.destroy()
+    }
+
+    if(totalSaved == 5){
+        gameOverText.text = "You Won!"
         player.destroy()
     }
 
