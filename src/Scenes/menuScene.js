@@ -11,7 +11,7 @@ export default class menuScene extends Phaser.Scene {
     }
     create(){
 
-        //How to play section
+        //How to play Section
         this.add.text(55, 16, 'How To Play', {
             fontSize: "50px",
             fill: "#FFFFFF",
@@ -24,14 +24,27 @@ export default class menuScene extends Phaser.Scene {
             fontSize: "20px",
             fill: "#FFFFFF",
         })
+        //Mission Section
+        this.add.text(750, 16, 'Mission Objective', {
+            fontSize: "50px",
+            fill: "#FFFFFF",
+        })
+        this.add.text(725, 100, "- Rescue 5 astronauts", {
+            fontSize: "20px",
+            fill: "#FFFFFF",
+        })
+        this.add.text(725, 150, "- Avoid incoming asteroids", {
+            fontSize: "20px",
+            fill: "#FFFFFF",
+        })
 
 
 
 
 
         //Start Game Button
-        button = this.add.text(1000,300, 'START GAME', {
-            fontSize: '30px',
+        button = this.add.text(400,450, 'START GAME', {
+            fontSize: '80px',
             fill: '#FFFFFF'
         })
         button.setInteractive().on("pointerover", () => {
