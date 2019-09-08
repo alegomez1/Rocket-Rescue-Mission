@@ -8,10 +8,6 @@ window.onload = function () {
     context.resume()
 
 }
-
-
-
-
 var config = {
     type: Phaser.AUTO,
     width: 1300,
@@ -49,13 +45,14 @@ let fuelCans
 var emmiter
 let astroPosition = 0
 let music
-let pickup
+let refuel
 let crash1
 let femaleThanks
 let maleThanks
 let maleThanks2
 var randomNum
 var damageCounter = 0;
+let healthPacks
 
 
 function preload() {
@@ -69,8 +66,9 @@ function preload() {
     this.load.image('smoke', './images/smoke.png')
     this.load.image('astronaut', './images/astronaut.png')
     this.load.image('fuelCan', './images/fuel.png')
+    this.load.image('healthPack', './images/healthPack.png')
     this.load.audio("ambient", "./Music/Ambient Space Music - Exoplanet.mp3")
-    this.load.audio("pickup", "./Music/Pickup.wav")
+    this.load.audio("refuel", "./Music/Refuel.wav")
     this.load.audio("rocketSound", "./Music/RTrim2.wav")
     this.load.audio("femaleThanks", './Music/FemaleThanks.mp3')
     this.load.audio("maleThanks", './Music/MaleThanks.wav')
@@ -84,7 +82,7 @@ function preload() {
 function create() {
     //Music
     music = this.sound.add("ambient")
-    pickup = this.sound.add("pickup")
+    refuel = this.sound.add("refuel")
     rocketSound = this.sound.add("rocketSound")
     femaleThanks = this.sound.add('femaleThanks')
     maleThanks = this.sound.add('maleThanks')
@@ -113,14 +111,9 @@ function create() {
     player.setMaxVelocity(600);
     player.angle = -90
     //Astronaut
-    // astronaut = this.physics.add.sprite(1200, 0, 'astronaut')
-    // astronaut.setScale(.5)
     astronaut = this.physics.add.group()
-    //Platform
-    rocketPad = this.physics.add.sprite(35, 290, 'platform')
-    rocketPad.body.allowGravity = false;
-    rocketPad.body.immovable = true;
-    rocketPad.setSize(75, 10) //Alters hitbox
+    //Health Packs
+    healthPacks = this.physics.add.group()
     //Asteroids
     bigAsteroids = this.physics.add.group()
     smallAsteroids = this.physics.add.group()
@@ -134,6 +127,7 @@ function create() {
     createAsteroid()
     createFuel()
     createAstronauts()
+    createHealthPack()
     //Adding Text
     fuelText = this.add.text(16, 16, '', {
         fontSize: '32px',
@@ -154,7 +148,7 @@ function update() {
     this.physics.add.overlap(player, astronaut, rescue, null, this);
     this.physics.add.overlap(player, bigAsteroids, crashBig, null, this);
     this.physics.add.overlap(player, smallAsteroids, crashSmall, null, this);
-
+    this.physics.add.overlap(player, healthPacks, collectHealthPack, null, this);
 
     var rocketConfig = {
         mute: false,
@@ -303,7 +297,7 @@ function createFuel() {
 }
 
 function collectFuel(player, can) {
-    pickup.play()
+    refuel.play()
     var test = this.add.text(can.x - 5, can.y - 5, '+500')
     can.destroy(can.x, can.y)
     fuel += 500
@@ -311,6 +305,19 @@ function collectFuel(player, can) {
     setTimeout(function () {
         test.destroy()
     }, 500)
+}
+function createHealthPack(){
+    setInterval(function(){
+        var pack = healthPacks.create(1390, Phaser.Math.Between(0,700), 'healthPack')
+        pack.body.allowGravity = false
+        pack.setVelocity(-250, 0)
+
+    },5500)
+}
+function collectHealthPack(player, pack){
+    refuel.play()
+    pack.destroy(pack.x, pack.y)
+    damageCounter -= 1
 }
 
 
