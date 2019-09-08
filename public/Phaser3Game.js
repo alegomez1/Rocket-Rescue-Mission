@@ -51,6 +51,7 @@ let crash1
 let femaleThanks
 let maleThanks
 let maleThanks2
+let healthSound
 var randomNum
 var damageCounter = 0;
 let healthPacks
@@ -75,6 +76,7 @@ function preload() {
     this.load.audio("maleThanks", './Music/MaleThanks.wav')
     this.load.audio("maleThanks2", './Music/MaleThanks2.wav')
     this.load.audio("crash1", './Music/Crash1.wav')
+    this.load.audio("healthSound", './Music/Pickup.wav')
 
     this.load.multiatlas('rocket2', './images/RocketSheet.json', 'images')
 
@@ -89,6 +91,7 @@ function create() {
     maleThanks = this.sound.add('maleThanks')
     maleThanks2 = this.sound.add('maleThanks2')
     crash1 = this.sound.add("crash1")
+    healthSound = this.sound.add('healthSound')
     var musicConfig = {
         mute: false,
         volume: 1,
@@ -192,8 +195,6 @@ function update() {
     } else {
         player.setAcceleration(0)
     }
-    //Functions
-    // floatingAstronaut()
 
     //Changing Text
     fuelText.text = 'Fuel: ' + fuel + ' units'
@@ -201,8 +202,6 @@ function update() {
 
     //Random Number Generating
     randomNum = Phaser.Math.Between(0, 2)
-
-
 
     if (damageCounter == 0){
         player.setTexture('rocket')
@@ -234,7 +233,6 @@ function update() {
     }
 
 }
-
 function createAstronauts() {
     setInterval(function () {
         var strandedAstronaut = astronaut.create(1450, Phaser.Math.Between(0, 700), 'astronaut')
@@ -243,7 +241,6 @@ function createAstronauts() {
         strandedAstronaut.setVelocity(-300, 0)
     }, 5000)
 }
-
 function rescue(player, strandedAstronaut) {
     var ladyConfig = {
         mute: false,
@@ -264,7 +261,6 @@ function rescue(player, strandedAstronaut) {
     strandedAstronaut.destroy(strandedAstronaut.x, strandedAstronaut.y)
     totalSaved += 1
 }
-
 function createAsteroid() {
     setInterval(function () {
         var rock = bigAsteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
@@ -282,46 +278,16 @@ function createAsteroid() {
         tinyRock.setScale(.5)
     }, 500)
 }
-
 function crashSmall(player, rock) {
     crash1.play()
     rock.destroy(rock.x, rock.y)
     damageCounter += 1
-
-    // if(damageCounter == 0){
-    //     player.setTexture('rocketD1')
-    //     damageCounter ++
-    // }else if (damageCounter == 1){
-    //     player.setTexture('rocketD2')
-    //     damageCounter ++
-    // }else if (damageCounter == 2){
-    //     player.setTexture('rocketD3')
-    //     damageCounter ++
-    // }else if (damageCounter == 3){
-    //     player.setTexture('rocketD4')
-    //     damageCounter ++
-    // }
 }
 function crashBig(player, rock) {
 
     crash1.play()
     rock.destroy(rock.x, rock.y)
     damageCounter += 2
-
-    // if(damageCounter == 0){
-    //     player.setTexture('rocketD2')
-    //     damageCounter +=2
-    // }else if (damageCounter == 1){
-    //     player.setTexture('rocketD3')
-    //     damageCounter +=2
-    // }
-    // else if (damageCounter == 2){
-    //     player.setTexture('rocketD4')
-    //     damageCounter +=2
-    // }else if (damageCounter == 3){
-    //     player.setTexture('rocketD4')
-    //     damageCounter +=2
-    // }
 }
 function createFuel() {
     setInterval(function () {
@@ -346,11 +312,12 @@ function createHealthPack(){
         var pack = healthPacks.create(1390, Phaser.Math.Between(0,700), 'healthPack')
         pack.body.allowGravity = false
         pack.setVelocity(-250, 0)
+        pack.setScale(.7)
 
-    },500)
+    },3000)
 }
 function collectHealthPack(player, pack){
-    refuel.play()
+    healthSound.play()
     pack.destroy(pack.x, pack.y)
     if(damageCounter>0){
         damageCounter -= 1
