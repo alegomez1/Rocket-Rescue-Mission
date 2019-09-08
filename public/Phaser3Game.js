@@ -40,6 +40,7 @@ let onPlatform = false
 let gameOver = false
 let fuelText;
 let savedText;
+let healthText;
 let astronaut
 let fuelCans
 var emmiter
@@ -137,6 +138,10 @@ function create() {
         fontSize: '32px',
         fill: '#FFFFFF'
     })
+    healthText = this.add.text(16, 80, '', {
+        fontSize: '32px',
+        fill: '#FFFFFF'
+    })
 
 
 
@@ -197,6 +202,37 @@ function update() {
     //Random Number Generating
     randomNum = Phaser.Math.Between(0, 2)
 
+
+
+    if (damageCounter == 0){
+        player.setTexture('rocket')
+        healthText.text = 'Health: 100%'
+
+    }else if (damageCounter == 1){
+        player.setTexture('rocketD1')
+        healthText.text = 'Health: 75%'
+
+    }else if (damageCounter == 2){
+        player.setTexture('rocketD2')
+        healthText.text = 'Health: 50%'
+
+    }else if (damageCounter == 3){
+        player.setTexture('rocketD3')
+        healthText.text = 'Health: 25%'
+
+    }
+    else if (damageCounter == 4){
+        player.setTexture('rocketD4')
+        healthText.text = 'Health: 1%'
+
+    }else if (damageCounter > 4){
+        bigAsteroids.destroy()
+        smallAsteroids.destroy()
+        healthPacks.destroy()
+        fuelCans.destroy()
+        player.destroy()
+    }
+
 }
 
 function createAstronauts() {
@@ -250,43 +286,43 @@ function createAsteroid() {
 function crashSmall(player, rock) {
     crash1.play()
     rock.destroy(rock.x, rock.y)
+    damageCounter += 1
 
-    if(damageCounter == 0){
-        player.setTexture('rocketD1')
-        damageCounter ++
-    }else if (damageCounter == 1){
-        player.setTexture('rocketD2')
-        damageCounter ++
-    }else if (damageCounter == 2){
-        player.setTexture('rocketD3')
-        damageCounter ++
-    }else if (damageCounter == 3){
-        player.setTexture('rocketD4')
-        damageCounter ++
-    }
+    // if(damageCounter == 0){
+    //     player.setTexture('rocketD1')
+    //     damageCounter ++
+    // }else if (damageCounter == 1){
+    //     player.setTexture('rocketD2')
+    //     damageCounter ++
+    // }else if (damageCounter == 2){
+    //     player.setTexture('rocketD3')
+    //     damageCounter ++
+    // }else if (damageCounter == 3){
+    //     player.setTexture('rocketD4')
+    //     damageCounter ++
+    // }
 }
-
 function crashBig(player, rock) {
 
     crash1.play()
     rock.destroy(rock.x, rock.y)
+    damageCounter += 2
 
-    if(damageCounter == 0){
-        player.setTexture('rocketD2')
-        damageCounter +=2
-    }else if (damageCounter == 1){
-        player.setTexture('rocketD3')
-        damageCounter +=2
-    }
-    else if (damageCounter == 2){
-        player.setTexture('rocketD4')
-        damageCounter +=2
-    }else if (damageCounter == 3){
-        player.setTexture('rocketD4')
-        damageCounter +=2
-    }
+    // if(damageCounter == 0){
+    //     player.setTexture('rocketD2')
+    //     damageCounter +=2
+    // }else if (damageCounter == 1){
+    //     player.setTexture('rocketD3')
+    //     damageCounter +=2
+    // }
+    // else if (damageCounter == 2){
+    //     player.setTexture('rocketD4')
+    //     damageCounter +=2
+    // }else if (damageCounter == 3){
+    //     player.setTexture('rocketD4')
+    //     damageCounter +=2
+    // }
 }
-
 function createFuel() {
     setInterval(function () {
         var can = fuelCans.create(1390, Phaser.Math.Between(0, 700), 'fuelCan')
@@ -295,7 +331,6 @@ function createFuel() {
         can.setScale(.9)
     }, 2000)
 }
-
 function collectFuel(player, can) {
     refuel.play()
     var test = this.add.text(can.x - 5, can.y - 5, '+500')
@@ -312,15 +347,15 @@ function createHealthPack(){
         pack.body.allowGravity = false
         pack.setVelocity(-250, 0)
 
-    },5500)
+    },500)
 }
 function collectHealthPack(player, pack){
     refuel.play()
     pack.destroy(pack.x, pack.y)
-    damageCounter -= 1
+    if(damageCounter>0){
+        damageCounter -= 1
+    }
 }
-
-
 console.log('Compiled')
 
 
