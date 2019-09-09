@@ -1,13 +1,15 @@
 
-window.onload = function () {
-    var context = new AudioContext();
-    context.resume()
-}
+// window.onload = function () {
+//     var context = new AudioContext();
+//     context.resume()
+// }
 
 
 var button
 import rocketTEXT from '../Assets/Images/RocketSprite2.png'
-import lop from '../Assets/Sound/Ambient Space Music - Exoplanet.mp3'
+
+// import myMusic from '../Assets/Sound/Pickup.wav'
+
 
 let image
 
@@ -20,17 +22,14 @@ export default class menuScene extends Phaser.Scene {
     preload() {
         this.load.image('rocket', rocketTEXT)
         image = this.physics.add.group()
-        this.load.audio('test', lop)
+
+
+
 
 
     }
     create(){
-
-
-        this.play('test')
-
-
-        //How to play Section
+ //How to play Section
         this.add.text(55, 16, 'How To Play', {
             fontSize: "50px",
             fill: "#FFFFFF",
