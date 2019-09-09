@@ -56,6 +56,13 @@ let healthSound
 var randomNum
 var damageCounter = 0;
 let healthPacks
+let gameOverSound
+let winSound
+let dramaticSound
+let lowHealthSound
+
+let four = false
+let lowHealth = false
 
 
 
@@ -79,6 +86,10 @@ function preload() {
     this.load.audio("maleThanks2", './Music/MaleThanks2.wav')
     this.load.audio("crash1", './Music/Crash1.wav')
     this.load.audio("healthSound", './Music/Pickup.wav')
+    this.load.audio("winSound", './Music/WinSound.wav')
+    this.load.audio('gameOverSound', './Music/GameOverSound.wav')
+    this.load.audio('dramaticSound', './Music/DramaticSound.wav')
+    this.load.audio('lowHealthSound', './Music/LowHealth.ogg')
 
     this.load.multiatlas('rocket2', './images/RocketSheet.json', 'images')
 
@@ -94,6 +105,10 @@ function create() {
     maleThanks2 = this.sound.add('maleThanks2')
     crash1 = this.sound.add("crash1")
     healthSound = this.sound.add('healthSound')
+    winSound = this.sound.add("winSound")
+    gameOverSound = this.sound.add("gameOverSound")
+    dramaticSound = this.sound.add("dramaticSound")
+    lowHealthSound = this.sound.add('lowHealthSound')
     var musicConfig = {
         mute: false,
         volume: 1,
@@ -152,9 +167,6 @@ function create() {
         fontSize: '90px',
         fill : '#FFFFFF'
     })
-
-
-
 }
 
 function update() {
@@ -165,26 +177,14 @@ function update() {
     this.physics.add.overlap(player, smallAsteroids, crashSmall, null, this);
     this.physics.add.overlap(player, healthPacks, collectHealthPack, null, this);
 
-    var rocketConfig = {
-        mute: false,
-        volume: 1,
-        rate: 1,
-        detune: 0,
-        seek: 0,
-        loop: false,
-        delay: 0
-    }
-
     //Movement
     if (cursors.left.isDown && fuel > 0) {
-        rocketSound.play(rocketConfig)
-        rocketSound.stop(rocketConfig)
+
         // player.setVelocityX(-160);
         player.setAngularVelocity(-200);
         
     } else if (cursors.right.isDown && fuel > 0) {
-        rocketSound.play(rocketConfig)
-        rocketSound.stop(rocketConfig)
+
         // player.setVelocityX(160)
         player.setAngularVelocity(200);
         
@@ -193,8 +193,7 @@ function update() {
     }
 
     if (cursors.up.isDown && fuel > 0) {
-        rocketSound.play(rocketConfig)
-        rocketSound.stop(rocketConfig)
+
         // player.setVelocityY(-200)
         this.physics.velocityFromRotation(player.rotation, 300, player.body.acceleration);
         fuel--
@@ -211,27 +210,44 @@ function update() {
     randomNum = Phaser.Math.Between(0, 2)
 
     if (damageCounter == 0){
+        lowHealthSound.stop()
+        lowHealth = false
         player.setTexture('rocket')
         healthText.text = 'Health: 100%'
 
     }else if (damageCounter == 1){
+        lowHealthSound.stop()
+        lowHealth = false
         player.setTexture('rocketD1')
         healthText.text = 'Health: 75%'
 
     }else if (damageCounter == 2){
+        lowHealthSound.stop()
+        lowHealth = false
         player.setTexture('rocketD2')
         healthText.text = 'Health: 50%'
 
     }else if (damageCounter == 3){
+        lowHealthSound.stop()
+        lowHealth = false
         player.setTexture('rocketD3')
         healthText.text = 'Health: 25%'
 
     }
-    else if (damageCounter == 4){
+    else if (damageCounter == 4 && lowHealth == false){
+        lowHealth = true
+        lowHealthSound.play()
+        lowHealthSound.volume = .2
+        lowHealthSound.loop = true
+
         player.setTexture('rocketD4')
         healthText.text = 'Health: 1%'
 
     }else if (damageCounter > 4){
+        lowHealthSound.stop()
+        music.stop()
+        dramaticSound.stop()
+        gameOverSound.play()
         gameOverText.text = "Game Over"
         bigAsteroids.destroy()
         smallAsteroids.destroy()
@@ -240,7 +256,17 @@ function update() {
         player.destroy()
     }
 
+    if(totalSaved == 4 && four == false){
+        four = true
+        music.stop()
+        dramaticSound.play()
+        dramaticSound.loop = true
+    }
     if(totalSaved == 5){
+        lowHealthSound.stop()
+        music.stop()
+        dramaticSound.stop()
+        winSound.play()
         gameOverText.text = "You Won!"
         player.destroy()
     }
@@ -289,7 +315,7 @@ function createAsteroid() {
         tinyRock.setVelocity(-100, 0)
         tinyRock.angle = Phaser.Math.Between(-180, 180)
         tinyRock.setScale(.5)
-    }, 500)
+    }, 2500)
 }
 function crashSmall(player, rock) {
     crash1.play()
