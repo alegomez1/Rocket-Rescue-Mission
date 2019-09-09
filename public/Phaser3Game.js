@@ -364,4 +364,4 @@ function collectHealthPack(player, pack){
         damageCounter -= 1
     }
 }
-console.log('Compiled')
+console.log('Compiled and working')
