@@ -278,7 +278,7 @@ function createAstronauts() {
         strandedAstronaut.body.allowGravity = false
         strandedAstronaut.setScale(.4)
         strandedAstronaut.setVelocity(-300, 0)
-    }, 2500)
+    }, 4000)
 }
 function rescue(player, strandedAstronaut) {
     var ladyConfig = {
@@ -315,18 +315,20 @@ function createAsteroid() {
         tinyRock.setVelocity(-100, 0)
         tinyRock.angle = Phaser.Math.Between(-180, 180)
         tinyRock.setScale(.5)
-    }, 1900)
+    }, 1000)
 }
 function crashSmall(player, rock) {
     crash1.play()
     rock.destroy(rock.x, rock.y)
     damageCounter += 1
+    fuel -= 100
 }
 function crashBig(player, rock) {
 
     crash1.play()
     rock.destroy(rock.x, rock.y)
     damageCounter += 2
+    fuel -= 200
 }
 function createFuel() {
     setInterval(function () {
