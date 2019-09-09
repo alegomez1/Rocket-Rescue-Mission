@@ -10,7 +10,7 @@ window.onload = function () {
 }
 var config = {
     type: Phaser.AUTO,
-    width: 1300,
+    width: 1420,
     height: 700,
     physics: {
         default: 'arcade',
@@ -136,19 +136,19 @@ function create() {
     createAstronauts()
     createHealthPack()
     //Adding Text
-    fuelText = this.add.text(16, 16, '', {
-        fontSize: '32px',
+    fuelText = this.add.text(16, 15, '', {
+        fontSize: '22px',
         fill: '#FFFFFF'
     });
-    savedText = this.add.text(800, 16, '', {
-        fontSize: '32px',
+    healthText = this.add.text(16, 55, '', {
+        fontSize: '22px',
         fill: '#FFFFFF'
     })
-    healthText = this.add.text(16, 80, '', {
-        fontSize: '32px',
+    savedText = this.add.text(16, 95, '', {
+        fontSize: '22px',
         fill: '#FFFFFF'
     })
-    gameOverText = this.add.text(400, 300, '', {
+    gameOverText = this.add.text(520, 300, '', {
         fontSize: '90px',
         fill : '#FFFFFF'
     })
@@ -248,7 +248,7 @@ function update() {
 }
 function createAstronauts() {
     setInterval(function () {
-        var strandedAstronaut = astronaut.create(1450, Phaser.Math.Between(0, 700), 'astronaut')
+        var strandedAstronaut = astronaut.create(1490, Phaser.Math.Between(0, 700), 'astronaut')
         strandedAstronaut.body.allowGravity = false
         strandedAstronaut.setScale(.4)
         strandedAstronaut.setVelocity(-300, 0)
@@ -276,14 +276,14 @@ function rescue(player, strandedAstronaut) {
 }
 function createAsteroid() {
     setInterval(function () {
-        var rock = bigAsteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
+        var rock = bigAsteroids.create(1490, Phaser.Math.Between(0, 700), 'asteroid')
         rock.body.immovable = true
         rock.body.allowGravity = false
         rock.setVelocity(-200, 0)
         rock.angle = Phaser.Math.Between(-180, 180)
         rock.setScale(1)
 
-        var tinyRock = smallAsteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
+        var tinyRock = smallAsteroids.create(1490, Phaser.Math.Between(0, 700), 'asteroid')
         tinyRock.body.immovable = true
         tinyRock.body.allowGravity = false
         tinyRock.setVelocity(-100, 0)
@@ -304,7 +304,7 @@ function crashBig(player, rock) {
 }
 function createFuel() {
     setInterval(function () {
-        var can = fuelCans.create(1390, Phaser.Math.Between(0, 700), 'fuelCan')
+        var can = fuelCans.create(1490, Phaser.Math.Between(0, 700), 'fuelCan')
         can.body.allowGravity = false
         can.setVelocity(-200, 0)
         can.setScale(.9)
@@ -322,7 +322,7 @@ function collectFuel(player, can) {
 }
 function createHealthPack(){
     setInterval(function(){
-        var pack = healthPacks.create(1390, Phaser.Math.Between(0,700), 'healthPack')
+        var pack = healthPacks.create(1490, Phaser.Math.Between(0,700), 'healthPack')
         pack.body.allowGravity = false
         pack.setVelocity(-250, 0)
         pack.setScale(.7)
@@ -337,26 +337,3 @@ function collectHealthPack(player, pack){
     }
 }
 console.log('Compiled')
-
-
-
-
-// function floatingAstronaut() {
-//     //Moving Astronaut up and down
-//     if (astroPosition < 490) {
-//         astronaut.y += .8;
-//         astronaut.angle += .5
-//         astroPosition += 1
-//         //console.log(astroPosition, '1')
-//     }
-//     if (astroPosition >= 490) {
-//         astronaut.y -= .8
-//         astronaut.angle += .5
-//         astroPosition += 1
-//         //console.log(astroPosition, '2')
-//     }
-//     if (astroPosition >= 900) {
-//         astroPosition = 10
-//         //console.log(astroPosition, '3')
-//     }
-// }
