@@ -2,7 +2,7 @@
   "name": "Game",
   "version": "1.0.0",
   "description": "",
-  "main": "Phaser3Game.js",
+  "main": "CST.js",
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.2.0",
@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alegomez1/Rescue-Mission.git"
+    "url": "git+https://github.com/alegomez1/RPG-Game.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/alegomez1/Rescue-Mission.git"
+    "url": "https://github.com/alegomez1/RPG-Game/issues"
   },
-  "homepage": "https://github.com/alegomez1/Rescue-Mission.git#readme"
+  "homepage": "https://github.com/alegomez1/RPG-Game#readme"
 }

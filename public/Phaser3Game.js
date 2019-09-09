@@ -131,7 +131,7 @@ function create() {
     player.setDrag(1000);
     player.setAngularDrag(900);
     player.setMaxVelocity(600);
-
+    player.angle = -90
     //Astronaut
     astronaut = this.physics.add.group()
     //Health Packs
@@ -278,7 +278,7 @@ function createAstronauts() {
         strandedAstronaut.body.allowGravity = false
         strandedAstronaut.setScale(.4)
         strandedAstronaut.setVelocity(-300, 0)
-    }, 4000)
+    }, 2500)
 }
 function rescue(player, strandedAstronaut) {
     var ladyConfig = {
@@ -305,30 +305,28 @@ function createAsteroid() {
         var rock = bigAsteroids.create(1490, Phaser.Math.Between(0, 700), 'asteroid')
         rock.body.immovable = true
         rock.body.allowGravity = false
-        rock.setVelocity(-400, 0)
+        rock.setVelocity(-240, 0)
         rock.angle = Phaser.Math.Between(-180, 180)
         rock.setScale(1)
 
         var tinyRock = smallAsteroids.create(1490, Phaser.Math.Between(0, 700), 'asteroid')
         tinyRock.body.immovable = true
         tinyRock.body.allowGravity = false
-        tinyRock.setVelocity(-210, 0)
+        tinyRock.setVelocity(-100, 0)
         tinyRock.angle = Phaser.Math.Between(-180, 180)
         tinyRock.setScale(.5)
-    }, 1000)
+    }, 1900)
 }
 function crashSmall(player, rock) {
     crash1.play()
     rock.destroy(rock.x, rock.y)
     damageCounter += 1
-    fuel -= 100
 }
 function crashBig(player, rock) {
 
     crash1.play()
     rock.destroy(rock.x, rock.y)
     damageCounter += 2
-    fuel -= 200
 }
 function createFuel() {
     setInterval(function () {
@@ -364,4 +362,4 @@ function collectHealthPack(player, pack){
         damageCounter -= 1
     }
 }
-console.log('Compiled and working')
+console.log('Compiled')
