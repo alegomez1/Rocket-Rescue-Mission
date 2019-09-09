@@ -131,7 +131,7 @@ function create() {
     player.setDrag(1000);
     player.setAngularDrag(900);
     player.setMaxVelocity(600);
-    player.angle = -90
+
     //Astronaut
     astronaut = this.physics.add.group()
     //Health Packs
