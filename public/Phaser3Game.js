@@ -88,7 +88,7 @@ function preload() {
     this.load.audio("healthSound", './Music/Pickup.wav')
     this.load.audio("winSound", './Music/WinSound.wav')
     this.load.audio('gameOverSound', './Music/GameOverSound.wav')
-    this.load.audio('dramaticSound', './Music/DramaticSound.wav')
+    this.load.audio('dramaticSound', './Music/DramaticSound2.wav')
     this.load.audio('lowHealthSound', './Music/LowHealth.ogg')
 
     this.load.multiatlas('rocket2', './images/RocketSheet.json', 'images')
@@ -305,7 +305,7 @@ function createAsteroid() {
         var rock = bigAsteroids.create(1490, Phaser.Math.Between(0, 700), 'asteroid')
         rock.body.immovable = true
         rock.body.allowGravity = false
-        rock.setVelocity(-200, 0)
+        rock.setVelocity(-240, 0)
         rock.angle = Phaser.Math.Between(-180, 180)
         rock.setScale(1)
 
@@ -315,7 +315,7 @@ function createAsteroid() {
         tinyRock.setVelocity(-100, 0)
         tinyRock.angle = Phaser.Math.Between(-180, 180)
         tinyRock.setScale(.5)
-    }, 2500)
+    }, 1900)
 }
 function crashSmall(player, rock) {
     crash1.play()
