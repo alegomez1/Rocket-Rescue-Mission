@@ -34,7 +34,7 @@ let player
 let rocketPad
 let bigAsteroids
 let smallAsteroids
-let fuel = 1000
+let fuel = 1500
 let totalSaved = 0
 let onPlatform = false
 let gameOver = false
@@ -252,7 +252,7 @@ function createAstronauts() {
         strandedAstronaut.body.allowGravity = false
         strandedAstronaut.setScale(.4)
         strandedAstronaut.setVelocity(-300, 0)
-    }, 5000)
+    }, 2500)
 }
 function rescue(player, strandedAstronaut) {
     var ladyConfig = {
@@ -279,7 +279,7 @@ function createAsteroid() {
         var rock = bigAsteroids.create(1390, Phaser.Math.Between(0, 700), 'asteroid')
         rock.body.immovable = true
         rock.body.allowGravity = false
-        rock.setVelocity(-300, 0)
+        rock.setVelocity(-200, 0)
         rock.angle = Phaser.Math.Between(-180, 180)
         rock.setScale(1)
 
@@ -327,7 +327,7 @@ function createHealthPack(){
         pack.setVelocity(-250, 0)
         pack.setScale(.7)
 
-    },3000)
+    },2000)
 }
 function collectHealthPack(player, pack){
     healthSound.play()
