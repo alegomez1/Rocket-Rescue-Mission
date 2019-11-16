@@ -1,4 +1,4 @@
-# Rocket Rescue Mission
+# 🚀 Rocket Rescue Mission
 
 Live demo - https://rocket-rescue-mission.herokuapp.com/
 
@@ -34,7 +34,7 @@ Movement: Left/Right arrow keys to rotate ship. Up arrow key to move in that dir
 
 #### For more details on the code and logic used, please refer to the comments and documentation inside of the code
 
-## 📱 Demo <a name="demos"/>
+## 🚀 Demo <a name="demos"/>
 Live demo - https://rocket-rescue-mission.herokuapp.com/
 
 
@@ -48,11 +48,10 @@ Live demo - https://rocket-rescue-mission.herokuapp.com/
 *   Visit http://localhost:8081/ on your browser to play the game locally
 
 ## 📦 Created using:
-* [React Native](https://facebook.github.io/react-native/) - Application Design Language
-* [Xcode](https://developer.apple.com/xcode/) - Simulator and Deploying to device
+* [Phaser 3](https://phaser.io/phaser3) - Game design
 * [Javascript](https://www.javascript.com/) - Frontend and backend
-* [React Redux](https://redux.js.org/basics/usage-with-react) - Global state manager
-* [Redux Persist](https://github.com/rt2zz/redux-persist) - Allows for persistance of data
+* [Express](https://expressjs.com/) - Backend Server
+* [Heroku](https://heroku.com) - Deployment
 
 ## 🙋🏼‍♂️ Created by: <a name="author"></a>
 * [Alejandro Gomez](https://github.com/alegomez1)
