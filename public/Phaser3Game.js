@@ -1,13 +1,11 @@
 /** @type {import("../Typings/phaser*/
 
-// import {LoadScene} from "./scenes/LoadScene";
-// import {MenuScene} from "./scenes/MenuScene";
-
 window.onload = function () {
     var context = new AudioContext();
     context.resume()
 
 }
+//The required config for the Phaser canvas
 var config = {
     type: Phaser.AUTO,
     width: 1420,
@@ -27,9 +25,9 @@ var config = {
         update: update
     }
 }
-
+//Creates the Phaser game canvas based on the configs
 var game = new Phaser.Game(config);
-
+//All of the variables used throughout the game
 let player
 let rocketPad
 let bigAsteroids
@@ -65,7 +63,7 @@ let four = false
 let lowHealth = false
 
 
-
+//Preloads all of the assets such as sprites and music
 function preload() {
     this.load.image('rocket', "./images/RocketSprite2.png")
     this.load.image('rocketD1', './images/RocketSpriteD1.png')
@@ -123,7 +121,6 @@ function create() {
     //Player(Rocket)
     player = this.physics.add.sprite(35, 250, 'rocket')
 
-    // this.physics.add.sprite(35, 250, 'rocket2', 'RocketSpriteD4.png')
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player.setSize(24, 25)
@@ -170,22 +167,20 @@ function create() {
 }
 
 function update() {
-    //Adds overlap physics to player and fuelcans
+    //Adds physics to the player and items found in the game, as well as what sound effect plays when they collide
     this.physics.add.overlap(player, fuelCans, collectFuel, null, this);
     this.physics.add.overlap(player, astronaut, rescue, null, this);
     this.physics.add.overlap(player, bigAsteroids, crashBig, null, this);
     this.physics.add.overlap(player, smallAsteroids, crashSmall, null, this);
     this.physics.add.overlap(player, healthPacks, collectHealthPack, null, this);
 
-    //Movement
+    //Player movement based on arrow keys. Checks to see that player has fuel
     if (cursors.left.isDown && fuel > 0) {
 
-        // player.setVelocityX(-160);
         player.setAngularVelocity(-200);
         
     } else if (cursors.right.isDown && fuel > 0) {
 
-        // player.setVelocityX(160)
         player.setAngularVelocity(200);
         
     } else {
@@ -194,7 +189,6 @@ function update() {
 
     if (cursors.up.isDown && fuel > 0) {
 
-        // player.setVelocityY(-200)
         this.physics.velocityFromRotation(player.rotation, 300, player.body.acceleration);
         fuel--
 
@@ -206,33 +200,29 @@ function update() {
     fuelText.text = 'Fuel: ' + fuel + ' units'
     savedText.text = 'Astronauts Rescued: ' + totalSaved
 
-    //Random Number Generating
+    //Random number generating for what sound effect will play when the player picks up an astronaut
     randomNum = Phaser.Math.Between(0, 2)
-
+    //This series of if statements checks to see what the players damage count is and sets their sprite and health text accordingly
     if (damageCounter == 0){
         lowHealthSound.stop()
         lowHealth = false
         player.setTexture('rocket')
         healthText.text = 'Health: 100%'
-
     }else if (damageCounter == 1){
         lowHealthSound.stop()
         lowHealth = false
         player.setTexture('rocketD1')
         healthText.text = 'Health: 75%'
-
     }else if (damageCounter == 2){
         lowHealthSound.stop()
         lowHealth = false
         player.setTexture('rocketD2')
         healthText.text = 'Health: 50%'
-
     }else if (damageCounter == 3){
         lowHealthSound.stop()
         lowHealth = false
         player.setTexture('rocketD3')
         healthText.text = 'Health: 25%'
-
     }
     else if (damageCounter == 4 && lowHealth == false){
         lowHealth = true
@@ -243,7 +233,8 @@ function update() {
         player.setTexture('rocketD4')
         healthText.text = 'Health: 1%'
 
-    }else if (damageCounter > 4){
+    }//Checks if the player received too much damage and loses the game
+    else if (damageCounter > 4){
         lowHealthSound.stop()
         music.stop()
         dramaticSound.stop()
@@ -255,13 +246,13 @@ function update() {
         fuelCans.destroy()
         player.destroy()
     }
-
+    //This if statement check to see if the player is one astronaut away from winning and plays dramatic music
     if(totalSaved == 4 && four == false){
         four = true
         music.stop()
         dramaticSound.play()
         dramaticSound.loop = true
-    }
+    }//This checks to see if the player won by rescuing all 5 astronauts
     if(totalSaved == 5){
         lowHealthSound.stop()
         music.stop()
@@ -272,6 +263,11 @@ function update() {
     }
 
 }
+/** 
+ * This function runs every 2.5 seconds and is used to spawn an astronaut outside the right of the canvas
+ * It creates them randomly along the y-axis between 0 and 700
+ * Their scalve and velocity are also set
+ */
 function createAstronauts() {
     setInterval(function () {
         var strandedAstronaut = astronaut.create(1490, Phaser.Math.Between(0, 700), 'astronaut')
@@ -280,6 +276,12 @@ function createAstronauts() {
         strandedAstronaut.setVelocity(-300, 0)
     }, 2500)
 }
+/** 
+ * This function runs whenever the player collides with an astronaut
+ * It checks to see what randomNum is and plays an astronaut thank you sound effect based on it
+ * That astronaut is then 'destroyed'/despawned
+ * The user's totalSaved count increases by 1
+ */
 function rescue(player, strandedAstronaut) {
     var ladyConfig = {
         mute: false,
@@ -300,6 +302,12 @@ function rescue(player, strandedAstronaut) {
     strandedAstronaut.destroy(strandedAstronaut.x, strandedAstronaut.y)
     totalSaved += 1
 }
+/**
+ * Function used to randomly generate astroids outside of the visible canvas
+ * rocks are large asteroids and tinyRocks are smaller ones, each call their respective create functions
+ * Their velocities and scales are set, and to make them appear more natural, they spawn at a random angle
+ * The function runs every 1.9 seconds
+ */
 function createAsteroid() {
     setInterval(function () {
         var rock = bigAsteroids.create(1490, Phaser.Math.Between(0, 700), 'asteroid')
@@ -317,17 +325,27 @@ function createAsteroid() {
         tinyRock.setScale(.5)
     }, 1900)
 }
+/**
+ * Function for when the player crashes with a smaller asteroid
+ * A unique sound effect is played and the asteroid is 'destroyed'/despawned
+ * The player then receives +1 damage
+ */
 function crashSmall(player, rock) {
     crash1.play()
     rock.destroy(rock.x, rock.y)
     damageCounter += 1
 }
+/**
+ * Function for when the player crashes with a larger asteroid
+ * A unique sound effect is played and the asteroid is 'destroyed'/despawned
+ * The player then receives +2 damage
+ */
 function crashBig(player, rock) {
-
     crash1.play()
     rock.destroy(rock.x, rock.y)
     damageCounter += 2
 }
+//This function randomly generates a fuel can ever 2 seconds
 function createFuel() {
     setInterval(function () {
         var can = fuelCans.create(1490, Phaser.Math.Between(0, 700), 'fuelCan')
@@ -336,16 +354,25 @@ function createFuel() {
         can.setScale(.9)
     }, 2000)
 }
+/** 
+* Function for when the player collects a fuel can
+* A unique sound effect is played and the fuel can is 'destroyed'/despawned
+* Text indicating that the user received +500 units of fuel appears on the screen for 0.5 seconds
+*/
 function collectFuel(player, can) {
     refuel.play()
-    var test = this.add.text(can.x - 5, can.y - 5, '+500')
+    var text = this.add.text(can.x - 5, can.y - 5, '+500')
     can.destroy(can.x, can.y)
     fuel += 500
 
     setTimeout(function () {
-        test.destroy()
+        text.destroy()
     }, 500)
 }
+/**
+ * Function for randomly generating health packs outside of the canvas
+ * A pack is generated every 2 seconds
+ */
 function createHealthPack(){
     setInterval(function(){
         var pack = healthPacks.create(1490, Phaser.Math.Between(0,700), 'healthPack')
@@ -355,6 +382,11 @@ function createHealthPack(){
 
     },2000)
 }
+/** 
+* Function for when the player collects a health pack
+* A unique sound effect is played and the health pack is 'destroyed'/despawned
+* If the user's damage counter is greater than 0, then it is decreased by 1, simulating a gain in health
+*/
 function collectHealthPack(player, pack){
     healthSound.play()
     pack.destroy(pack.x, pack.y)
@@ -362,4 +394,3 @@ function collectHealthPack(player, pack){
         damageCounter -= 1
     }
 }
-console.log('Compiled')
