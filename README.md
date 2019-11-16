@@ -2,7 +2,7 @@
 
 Live demo - https://rocket-rescue-mission.herokuapp.com/
 
-![](GifName.gif)<br/>
+![](GameDemo2.gif)<br/>
 
 ## 📖 Table of Contents
 - [About](#about)
@@ -37,6 +37,7 @@ Movement: Left/Right arrow keys to rotate ship. Up arrow key to move in that dir
 ## 🚀 Demo <a name="demos"/>
 Live demo - https://rocket-rescue-mission.herokuapp.com/
 
+![](GameDemo2.gif)<br/>
 
 ## 🛠 Setup <a name="setup"/>
 
